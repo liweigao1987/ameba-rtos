@@ -7,8 +7,8 @@
 /********************************User configure**************************/
 #define RECONNECT_LIMIT			8
 #define RECONNECT_INTERVAL		5000/*ms*/
-char *test_ssid = "lwg";
-char *test_password = "12345678";
+char test_ssid[64] = {0};
+char test_password[64] = {0};
 rtw_security_t secure_type = RTW_SECURITY_WPA2_AES_PSK;/*Just distinguish between WEP, TKIP/WPA/WPA2/WPA3 can use the same secure_type*/
 /***********************************End**********************************/
 static const char *TAG = "WIFI_RECONN_EXAMPLE";
@@ -121,8 +121,19 @@ static void user_main_task(void *param)
 	rtos_task_delete(NULL);
 }
 
-void example_wifi_user_reconnect(void)
+u32 test_wifi(u16 argc, u8 *argv[])
 {
+    if (argc < 2) {
+        RTK_LOGI(TAG, "lack params!\n");
+        return 1;
+    }
+    if (strlen(argv[0]) >= 64 || strlen(argv[1]) >= 64) {
+        RTK_LOGI(TAG, "ssid or psd too long!\n");
+        return 2;
+    }
+    memcpy(test_ssid, argv[0], strlen(argv[0]));
+    memcpy(test_password, argv[1], strlen(argv[1]));
+    RTK_LOGI(TAG, "test_wifi ssid=%s, password=%s\n", test_ssid, test_password);
 	/* Disable realtek fast reconnect */
 	wifi_fast_connect_enable(0);
 
