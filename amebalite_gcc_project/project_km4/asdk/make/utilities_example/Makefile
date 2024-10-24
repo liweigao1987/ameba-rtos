@@ -13,6 +13,7 @@ MODULE_IFLAGS               += -I$(BASEDIR)/component/bluetooth/example/bt_mesh_
 MODULE_IFLAGS               += -I$(FREERTOSDIR)/include
 MODULE_IFLAGS               += -I$(FREERTOSDIR)/portable/GCC/AmebaLite_KM4/non_secure
 MODULE_IFLAGS               += -I$(FREERTOSDIR)/portable/GCC/AmebaLite_KM4/secure
+MODULE_IFLAGS               += -I$(BASEDIR)/component/bds_light_sdk/include
 .PHONY: all clean
 
 ifeq ($(CONFIG_MEDIA_PLAYER),y)
