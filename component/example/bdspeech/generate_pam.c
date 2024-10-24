@@ -129,3 +129,6 @@ char* get_dcs_pam() {
     return pam_json_json_string;
 }
 
+char* get_wifi_mac() {
+    return "02:42:47:dc:03:55";
+}

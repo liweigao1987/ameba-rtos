@@ -14,6 +14,9 @@
 
 #define WAKEUP_BACKTIME 200
 
+#define ESP_LOGW(tag, fmt, ...) printf(fmt, ##__VA_ARGS__)
+#define ESP_LOGE(tag, fmt, ...) printf(fmt, ##__VA_ARGS__)
+
 int32_t bdsc_event_callback(bds_client_event_t* event, void* custom) {
     if (event != NULL) {
         ESP_LOGW(EVENT_TAG, "callback key:%d", event->key);

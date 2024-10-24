@@ -1,13 +1,13 @@
-#include "bds_common_utility.h"
-#include "bds_client_params.h"
 #include "bds_client_command.h"
 #include "bds_client_event.h"
+#include "bds_client_params.h"
+#include "bds_common_utility.h"
 
 #define TAG "case_init"
 
 extern int32_t bdsc_event_callback(bds_client_event_t* event, void* custom);
 
-void*          test_create_sdk() {
+void* test_create_sdk() {
     /* ESP_LOGI(TAG, "%s", __func__); */
     bds_client_context_t context;
     void*                handle = bds_client_create(&context);
@@ -32,7 +32,8 @@ void test_destory_sdk(void* handle) {
 
 extern char* get_wifi_mac();
 extern char* get_dcs_pam();
-void         test_config_sdk(void* handle) {
+
+void test_config_sdk(void* handle) {
     // "10.99.197.131", 8110   lee.baidu.com  PROTOCOL_TLS PROTOCOL_DEFAULT
     char sn[37];
     generate_uuid(sn);

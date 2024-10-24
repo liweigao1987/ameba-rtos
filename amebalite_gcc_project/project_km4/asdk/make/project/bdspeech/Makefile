@@ -17,6 +17,7 @@ MODULE_IFLAGS += -I$(CSRC_DIR)/connection/io_watch/
 MODULE_IFLAGS += -I$(CSRC_DIR)/connection/state/
 MODULE_IFLAGS += -I$(CSRC_DIR)/connection/strategy/
 MODULE_IFLAGS += -I$(CSRC_DIR)/dsp/
+MODULE_IFLAGS += -I$(CSRC_DIR)/hardware/dsp_feature/
 MODULE_IFLAGS += -I$(CSRC_DIR)/include/
 MODULE_IFLAGS += -I$(CSRC_DIR)/log/
 MODULE_IFLAGS += -I$(CSRC_DIR)/online_engine/
@@ -44,9 +45,16 @@ CSRC +=	\
 	$(wildcard $(CSRC_DIR)/client/*.c) \
 	$(wildcard $(CSRC_DIR)/client_adapter/*.c) \
 	$(wildcard $(CSRC_DIR)/connection/*.c) \
+	$(wildcard $(CSRC_DIR)/connection/io_watch/*.c) \
+	$(wildcard $(CSRC_DIR)/connection/state/*.c) \
+	$(wildcard $(CSRC_DIR)/connection/strategy/*.c) \
 	$(wildcard $(CSRC_DIR)/dsp/*.c) \
+	$(wildcard $(CSRC_DIR)/hardware/dsp_feature/*.c) \
 	$(wildcard $(CSRC_DIR)/log/*.c) \
 	$(wildcard $(CSRC_DIR)/online_engine/*.c) \
+	$(wildcard $(CSRC_DIR)/online_engine/asr/*.c) \
+	$(wildcard $(CSRC_DIR)/online_engine/message_push/*.c) \
+	$(wildcard $(CSRC_DIR)/online_engine/post_event/*.c) \
 	$(wildcard $(CSRC_DIR)/protocol/*.c) \
 	$(wildcard $(CSRC_DIR)/recorder/*.c) \
 	$(wildcard $(CSRC_DIR)/tool/*.c) \
