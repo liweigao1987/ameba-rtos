@@ -125,7 +125,9 @@
 /*
  * < Audio Config
  */
-#undef  CONFIG_AUDIO_FWK
+#define CONFIG_AUDIO_FWK 1
+#define CONFIG_AUDIO_MIXER 1
+#undef  CONFIG_AUDIO_PASSTHROUGH
 #undef  CONFIG_MEDIA_PLAYER
 
 /*

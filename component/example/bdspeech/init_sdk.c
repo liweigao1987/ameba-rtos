@@ -12,7 +12,7 @@ void* test_create_sdk() {
     bds_client_context_t context;
     void*                handle = bds_client_create(&context);
     bds_client_set_event_listener(handle, bdsc_event_callback, handle);
-    bds_set_log_level(3);
+    bds_set_log_level(4);
     return handle;
 }
 
