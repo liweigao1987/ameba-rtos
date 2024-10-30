@@ -33,6 +33,9 @@ MODULE_IFLAGS               += -I$(FREERTOSDIR)/portable/GCC/AmebaLite_KM4/non_s
 MODULE_IFLAGS               += -I$(FREERTOSDIR)/portable/GCC/AmebaLite_KM4/secure
 MODULE_IFLAGS               += -I$(BASEDIR)/component/network/cJSON
 MODULE_IFLAGS += -I$(BASEDIR)/component/audio/interfaces
+MODULE_IFLAGS += -I$(BASEDIR)/component/soc/amebalite/swlib/
+MODULE_IFLAGS += -I$(BASEDIR)/component/audio/third_party/libopus/include/
+MODULE_IFLAGS += -I$(BASEDIR)/component/wifi/api/
 # MODULE_IFLAGS += -I$(BASEDIR)/component/soc/amebalite/fwlib/include/
 
 #set your source code path here

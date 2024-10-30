@@ -18,3 +18,8 @@ u32 test_start_asr_cmd(u16 argc, u8* argv[]) {
     test_start_asr(g_speech, 0);
     return 0;
 }
+
+u32 test_cpu_monitor_cmd(u16 argc, u8* argv[]) {
+    test_cpu_monitor();
+    return 0;
+}

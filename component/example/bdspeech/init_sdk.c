@@ -12,7 +12,7 @@ void* test_create_sdk() {
     bds_client_context_t context;
     void*                handle = bds_client_create(&context);
     bds_client_set_event_listener(handle, bdsc_event_callback, handle);
-    bds_set_log_level(4);
+    bds_set_log_level(3);
     return handle;
 }
 
@@ -36,7 +36,7 @@ extern char* get_dcs_pam();
 void test_config_sdk(void* handle) {
     // "10.99.197.131", 8110   lee.baidu.com  PROTOCOL_TLS PROTOCOL_DEFAULT
     char sn[37];
-    generate_uuid(sn);
+    bds_generate_uuid(sn);
     char* pam_data = get_dcs_pam();
     char* mac      = get_wifi_mac();
     /* ESP_LOGW(TAG, "mac=%s", mac); */

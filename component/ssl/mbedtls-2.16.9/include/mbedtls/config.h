@@ -18,6 +18,7 @@
 
 /* RTL_CRYPTO_FRAGMENT should be less than 16000, and should be 16bytes-aligned */
 #define RTL_CRYPTO_FRAGMENT               15360
+#define MBEDTLS_DEBUG_C
 
 #define MBEDTLS_VERSION_CONVERT(a,b,c)	(((a) << 16) + ((b) << 8) + (c))
 #ifndef MBEDTLS_VERSION

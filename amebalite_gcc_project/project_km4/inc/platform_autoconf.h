@@ -14,10 +14,10 @@
  */
 #define CONFIG_IMG1_FLASH 1
 #undef  CONFIG_IMG1_SRAM
-#undef  CONFIG_CODE_XIP_DATA_PSRAM
+#define CONFIG_CODE_XIP_DATA_PSRAM 1
 #undef  CONFIG_CODE_PSRAM_DATA_SRAM
 #undef  CONFIG_CODE_PSRAM_DATA_PSRAM
-#define CONFIG_CODE_XIP_DATA_SRAM 1
+#undef  CONFIG_CODE_XIP_DATA_SRAM
 
 /*
  * < CONFIG Mass Production
@@ -134,7 +134,7 @@
  * Third Party Lib
  */
 #undef  CONFIG_SPEEX_LIB
-#undef  CONFIG_OPUS_LIB
+#define CONFIG_OPUS_LIB 1
 
 /*
  * < CONFIG IPC Message Queue

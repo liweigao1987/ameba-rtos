@@ -21,4 +21,8 @@ const COMMAND_TABLE cutils_test_cmd_table[] = {
 		(const u8 *)"start_asr",  0, test_start_asr_cmd, (const u8 *)"\t start_asr\n"
     "\t\t eg: start_asr\n"
 	},
+  {
+		(const u8 *)"cpu_monitor",  0, test_cpu_monitor_cmd, (const u8 *)"\t cpu_monitor\n"
+    "\t\t eg: cpu_monitor\n"
+	},
 };
