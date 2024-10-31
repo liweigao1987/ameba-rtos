@@ -13,7 +13,7 @@ static int print_real_time_stats(TickType_t xTicksToWait) {
 
     // Allocate array to store current task states
     start_array_size = uxTaskGetNumberOfTasks() + ARRAY_SIZE_OFFSET;
-    start_array      = malloc(sizeof(TaskStatus_t) * start_array_size);
+    start_array      = rtos_mem_malloc(sizeof(TaskStatus_t) * start_array_size);
     if (start_array == NULL) {
         ret = -10;
         goto exit;
@@ -29,7 +29,7 @@ static int print_real_time_stats(TickType_t xTicksToWait) {
 
     // Allocate array to store tasks states post delay
     end_array_size = uxTaskGetNumberOfTasks() + ARRAY_SIZE_OFFSET;
-    end_array      = malloc(sizeof(TaskStatus_t) * end_array_size);
+    end_array      = rtos_mem_malloc(sizeof(TaskStatus_t) * end_array_size);
     if (end_array == NULL) {
         ret = -10;
         goto exit;
@@ -84,8 +84,8 @@ static int print_real_time_stats(TickType_t xTicksToWait) {
     ret = 0;
 
 exit:  // Common return path
-    free(start_array);
-    free(end_array);
+    rtos_mem_free(start_array);
+    rtos_mem_free(end_array);
     return ret;
 }
 

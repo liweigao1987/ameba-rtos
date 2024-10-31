@@ -23,5 +23,6 @@ u32 test_bdspeech(u16 argc, u8* argv[]);
 u32 test_start_asr_cmd(u16 argc, u8* argv[]);
 u32 test_cpu_monitor_cmd(u16 argc, u8* argv[]);
 u32 test_socket_cmd(u16 argc, u8* argv[]);
+u32 test_env_cmd(u16 argc, u8* argv[]);
 
 #endif /* _EXAMPLE_BDSPEECH_H_ */

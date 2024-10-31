@@ -48,5 +48,5 @@ void test_config_sdk(void* handle) {
     params.engine_params = engine_params;
     bds_client_config(handle, &params);
     bdsc_engine_params_destroy(engine_params);
-    free(pam_data);
+    rtos_mem_free(pam_data);
 }

@@ -20,7 +20,7 @@ void test_start_event(void* handle) {
     // start
     char sn[37];
     bds_generate_uuid(sn);
-    char* pam_data = malloc(4096);
+    char* pam_data = rtos_mem_malloc(4096);
     generate_pam(pam_data);
     bdsc_eventupload_params_t* event_params =
         bdsc_event_params_create(sn, 1775, "com.baidu.iot", get_wifi_mac(), strlen(pam_data) + 1, pam_data);

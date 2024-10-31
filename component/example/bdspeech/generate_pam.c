@@ -1,8 +1,9 @@
-#include "stdio.h"
-#include "string.h"
-#include "cJSON.h"
 #include "bds_client_context.h"
 #include "bds_common_utility.h"
+#include "cJSON.h"
+#include "stdio.h"
+#include "string.h"
+#include "wifi_intf_drv_to_app_basic.h"
 
 char g_pam[] =
     "{ \
@@ -74,14 +75,13 @@ char g_pam[] =
 	\"LinkVersion\": 2 \
 }";
 
-const char *MSG_ID = "1bf300000001541d196bdb00002be600000004";
-const char *DIA_ID = "1bf300000001542d38c5cc00002be600000005";
+const char* MSG_ID = "1bf300000001541d196bdb00002be600000004";
+const char* DIA_ID = "1bf300000001542d38c5cc00002be600000005";
 
-const int generate_pam(char* pam_prama)
-{
+const int generate_pam(char* pam_prama) {
     memcpy(pam_prama, g_pam, strlen(g_pam) + 1);
-    char *target = NULL;
-    char sn[SN_LENGTH];
+    char* target = NULL;
+    char  sn[SN_LENGTH];
 
     target = strstr(pam_prama, MSG_ID);
     if (!target) {
@@ -105,7 +105,7 @@ const int generate_pam(char* pam_prama)
 }
 
 char* get_dcs_pam() {
-    cJSON *pam_json = cJSON_CreateObject();
+    cJSON* pam_json = cJSON_CreateObject();
     assert(pam_json != NULL);
     if (pam_json == NULL) {
         /* ESP_LOGE("pam", "pam_json memory error"); */
@@ -119,7 +119,7 @@ char* get_dcs_pam() {
     cJSON_AddStringToObject(pam_json, "from", "dumi");
     cJSON_AddNumberToObject(pam_json, "LinkVersion", 2);
 
-    char *pam_json_json_string = cJSON_PrintUnformatted(pam_json);
+    char* pam_json_json_string = cJSON_PrintUnformatted(pam_json);
     assert(pam_json_json_string != NULL);
 
     if (NULL != pam_json) {
@@ -129,6 +129,21 @@ char* get_dcs_pam() {
     return pam_json_json_string;
 }
 
-char* get_wifi_mac() {
-    return "02:42:47:dc:03:55";
+static char* my_mac = NULL;
+char*        get_wifi_mac() {
+    if (!my_mac) {
+        my_mac        = rtos_mem_malloc(18);
+        rtw_mac_t mac = {0};
+        int       ret = wifi_get_mac_address(0, &mac, 0);
+        if (ret != 0) {
+            printf("get wifi mac failed! ret=%d\n", ret);
+            char* default_mac = "11:11:11:11:11:11";
+            memcpy(my_mac, default_mac, 17);
+        } else {
+            sprintf(my_mac, "%02x:%02x:%02x:%02x:%02x:%02x", mac.octet[0], mac.octet[1], mac.octet[2], mac.octet[3],
+                    mac.octet[4], mac.octet[5]);
+        }
+        my_mac[17] = '\0';
+    }
+    return my_mac;
 }
