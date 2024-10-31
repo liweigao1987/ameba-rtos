@@ -1,30 +1,24 @@
 include $(MAKE_INCLUDE_GEN)
 
-.PHONY: all clean
+.PHONY: lib clean
 
 #*****************************************************************************#
-#                               Object FILE LIST                              #
+#                               VARIABLES	                                  #
 #*****************************************************************************#
-OBJS = 
-
 
 #*****************************************************************************#
 #                        RULES TO GENERATE TARGETS                            #
 #*****************************************************************************#
 
 # Define the Rules to build the core targets
-all: CORE_TARGETS COPY_RAM_OBJS
-ifeq ($(CONFIG_PNG_EN),y)
-	make -C libz all
-	make -C libpng all
+lib:
+ifeq ($(CONFIG_GUI_LIB_PNG),y)
+	make -C libz lib
+	make -C libpng lib
 endif
-ifeq ($(CONFIG_JPEG_EN),y)
-	make -C libjpeg all
+ifeq ($(CONFIG_GUI_LIB_JPG),y)
+	make -C libjpeg lib
 endif
-#*****************************************************************************#
-#              GENERATE OBJECT FILE
-#*****************************************************************************#
-CORE_TARGETS: $(OBJS)
 
 #*****************************************************************************#
 #                        RULES TO CLEAN TARGETS                               #
