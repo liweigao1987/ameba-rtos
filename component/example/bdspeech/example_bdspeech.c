@@ -23,3 +23,8 @@ u32 test_cpu_monitor_cmd(u16 argc, u8* argv[]) {
     test_cpu_monitor();
     return 0;
 }
+
+u32 test_socket_cmd(u16 argc, u8* argv[]) {
+    test_socket(argv[0], argv[1]);
+    return 0;
+}

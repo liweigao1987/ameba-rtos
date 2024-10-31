@@ -17,9 +17,11 @@ extern void  test_stop_wakeup(void* handle);
 extern void  test_start_asr(void* handle, int back_time);
 extern void  test_start_event(void* handle);
 extern void  test_cpu_monitor();
+extern void  test_socket(char* ip , char* port);
 
 u32 test_bdspeech(u16 argc, u8* argv[]);
 u32 test_start_asr_cmd(u16 argc, u8* argv[]);
 u32 test_cpu_monitor_cmd(u16 argc, u8* argv[]);
+u32 test_socket_cmd(u16 argc, u8* argv[]);
 
 #endif /* _EXAMPLE_BDSPEECH_H_ */

@@ -25,4 +25,8 @@ const COMMAND_TABLE cutils_test_cmd_table[] = {
 		(const u8 *)"cpu_monitor",  0, test_cpu_monitor_cmd, (const u8 *)"\t cpu_monitor\n"
     "\t\t eg: cpu_monitor\n"
 	},
+  {
+		(const u8 *)"socket",  2, test_socket_cmd, (const u8 *)"\t socket <ip port>\n"
+    "\t\t eg: socket 192.168.1.3 5001\n"
+	},
 };
