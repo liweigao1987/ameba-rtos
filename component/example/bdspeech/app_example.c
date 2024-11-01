@@ -33,4 +33,8 @@ const COMMAND_TABLE cutils_test_cmd_table[] = {
 		(const u8 *)"env",  0, test_env_cmd, (const u8 *)"\t env\n"
     "\t\t eg: env\n"
 	},
+  {
+		(const u8 *)"nbsock",  0, test_nbsock_cmd, (const u8 *)"\t nbsock\n"
+    "\t\t eg: nbsock\n"
+	},
 };

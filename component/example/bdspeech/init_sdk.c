@@ -40,13 +40,13 @@ void test_config_sdk(void* handle) {
     char* pam_data = get_dcs_pam();
     char* mac      = get_wifi_mac();
     /* ESP_LOGW(TAG, "mac=%s", mac); */
-    /* bdsc_engine_params_t* engine_params = bdsc_engine_params_create( */
-    /*     sn, 1775, "leetest.baidu.com", 443, PROTOCOL_TLS, mac, "com.baidu.iot", strlen(pam_data) + 1, pam_data); */
-   /* bdsc_engine_params_t* engine_params = bdsc_engine_params_create( */
-    /*     sn, 1775, "leetest.baidu.com", 80, PROTOCOL_DEFAULT, mac, "com.baidu.iot", strlen(pam_data) + 1, pam_data); */
- 
     bdsc_engine_params_t* engine_params = bdsc_engine_params_create(
-        sn, 1775, "10.174.33.38", 8114, PROTOCOL_DEFAULT, mac, "com.baidu.iot", strlen(pam_data) + 1, pam_data);
+        sn, 1775, "leetest.baidu.com", 443, PROTOCOL_TLS, mac, "com.baidu.iot", strlen(pam_data) + 1, pam_data);
+   /* bdsc_engine_params_t* engine_params = bdsc_engine_params_create( */
+   /*      sn, 1775, "leetest.baidu.com", 80, PROTOCOL_DEFAULT, mac, "com.baidu.iot", strlen(pam_data) + 1, pam_data); */
+ 
+    /* bdsc_engine_params_t* engine_params = bdsc_engine_params_create( */
+    /*     sn, 1775, "10.174.33.38", 8114, PROTOCOL_DEFAULT, mac, "com.baidu.iot", strlen(pam_data) + 1, pam_data); */
 
     bds_client_params_t params;
     memset(&params, 0, sizeof(bds_client_params_t));

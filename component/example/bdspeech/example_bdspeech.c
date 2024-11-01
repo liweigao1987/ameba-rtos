@@ -39,3 +39,7 @@ u32 test_env_cmd(u16 argc, u8* argv[]) {
     printf("sleep 1s, tick=%d\n", tick_after - tick_before);
     return 0;
 }
+
+u32 test_nbsock_cmd(u16 argc, u8* argv[]) {
+    example_nonblock_connect();
+}
