@@ -1,0 +1,17 @@
+.insert <RPCBaseDS.h>
+.insert <VoiceRPCBaseDS.h>
+
+program VOICE_SYSTEM {
+	version VERSION {
+		VOICE_RPCRES_INIT VOICE_RPC_ToAgent_Init(VOICE_RPC_INIT) = 1;
+		HRESULT VOICE_RPC_ToAgent_Release(VOICE_RPC_INSTANCE) = 2;
+
+		HRESULT VOICE_RPC_ToAgent_Streaming_Process(VOICE_RPC_INSTANCE) = 3;
+		HRESULT VOICE_RPC_ToAgent_Recognizer_Process(VOICE_RPC_INSTANCE) = 4;
+
+		HRESULT VOICE_RPC_ToAgent_Sync_Mic_Data(VOICE_RPC_MIC_DATA) = 5;
+		
+		HRESULT VOICE_RPC_ToAgent_USR_CMD(VOICE_RPC_USR_CMD) = 6;
+	} = 0;
+
+} = 3001;

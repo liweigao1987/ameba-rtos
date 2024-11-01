@@ -1,0 +1,13 @@
+.insert <RPCBaseDS.h>
+.insert <VoiceRPCBaseDS.h>
+
+program VOICE_AGENT {
+	version VERSION {
+		/** General **/
+		HRESULT VOICE_RPC_ToSystem_Streaming_Callback(VOICE_RPC_STREAMING_RESULT) = 1;
+		HRESULT VOICE_RPC_ToSystem_Recognizer_Callback(VOICE_RPC_RECOGNIZER_RESULT) = 2;
+		HRESULT VOICE_RPC_ToSystem_Error(VOICE_RPC_ERROR_STATE) = 3;
+		HRESULT VOICE_RPC_ToSystem_USR_CMD(VOICE_RPC_USR_CMD) = 4;
+	}=0;
+
+}=3002;
