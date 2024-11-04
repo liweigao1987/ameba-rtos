@@ -66,7 +66,7 @@ static uint8_t *g_res_data = NULL;
 
 static bool g_thread_running = false;
 static bool g_recording = false;
-static short recoder_cnt=0;
+static uint32_t g_mic_data_cnt = 0;
 
 CLNT_STRUCT clnt;
 static void StartRecordTask(void);
@@ -85,6 +85,7 @@ static bool SyncData(void)
 	uint32_t size = RingBuffer_Space(g_mic_ringbuffer);
 	if (size >= RECORD_SIZE) {
 		RingBuffer_Write(g_mic_ringbuffer, g_record_data, RECORD_SIZE);
+		g_mic_data_cnt++;
 	} else {
 		LOGV("%s ringbuffer overflow size=%ld", __FUNCTION__, size);
 		ret = false;
@@ -170,9 +171,10 @@ static void StartRecordTask(void)
 	RTAudioControl_SetChannelMicCategory(2, RTAUDIO_AMIC3);
 
 	RTAudioControl_SetCaptureChannelVolume(0, 0x50);
-	 RTAudioControl_SetMicBstGain(RTAUDIO_AMIC1, RTAUDIO_MICBST_GAIN_30DB);
-	 RTAudioControl_SetMicBstGain(RTAUDIO_AMIC2, RTAUDIO_MICBST_GAIN_30DB);
-	 RTAudioControl_SetMicBstGain(RTAUDIO_AMIC3, RTAUDIO_MICBST_GAIN_30DB);
+	RTAudioControl_SetCaptureChannelVolume(1, 0x50);
+	RTAudioControl_SetMicBstGain(RTAUDIO_AMIC1, RTAUDIO_MICBST_GAIN_0DB);
+	RTAudioControl_SetMicBstGain(RTAUDIO_AMIC2, RTAUDIO_MICBST_GAIN_0DB);
+	RTAudioControl_SetMicBstGain(RTAUDIO_AMIC3, RTAUDIO_MICBST_GAIN_0DB);
 
 	RTAudioRecord_SetParameters(audio_record, "cap_mode=no_afe_pure_data");
 	LOGD("RecordStartTask.. END");
@@ -193,21 +195,21 @@ static HRESULT *OnRecognizer(VOICE_RPC_RECOGNIZER_RESULT *pParam, RPC_STRUCT *pR
 	long word_id = pParam->word_id;
 	float confidence = pParam->confidence;
 	LOGD("OnRecognizer ret:%d, word_id:%d, confidence:%f", (int)uv_ret, (int)word_id, confidence);
-	while (RingBuffer_Available(g_wkmsg_ringbuffer) > 0) {
+	while (RingBuffer_Available(g_wkmsg_ringbuffer) > sizeof(wakeup_info_to_host_t)) {
 		RingBuffer_Read(g_wkmsg_ringbuffer, (uint8_t *)&tmp, sizeof(wakeup_info_to_host_t));
 		LOGD("WK  id:%d, word:%s, score:%f, dir:%d", tmp.keyword_id, tmp.wakeup_keywords, tmp.score, tmp.direction);
 	}
-	recoder_cnt++;
 	*pRes = 0;
 	return pRes;
 }
-void ReadVadByOnline(uint8_t *data_buffer, int data_buffer_len)
+void ReadVadByOnline(uint8_t *data_buffer, int data_buffer_len, uint32_t *data_no)
 {
 	int64_t seq = 0;
 	while (RingBuffer_Available(g_vad_ringbuffer) < (uint32_t)data_buffer_len) {
 		rtos_time_delay_ms(1);
 	}
 	RingBuffer_Read(g_vad_ringbuffer, (uint8_t *)data_buffer, data_buffer_len);
+	*data_no = g_mic_data_cnt;
 	//memcpy(&seq, data_buffer, 8);
 	//if (seq % 1000 == 0) {
 	//	LOGD("ReadVadByOnline len=%d, seq=%lld", data_buffer_len, seq);
@@ -217,10 +219,11 @@ void ReadVadByOnline(uint8_t *data_buffer, int data_buffer_len)
 void OnlineTask(void *param)
 {
 	(void) param;
-	uint8_t tmp_data[640] = {0};
+	uint8_t tmp_data[512] = {0};
 	short tmp1=0,tmp2 = 0;
+	uint32_t frame_no = 0;
 	while (1) {
-		ReadVadByOnline(tmp_data, 640);
+		ReadVadByOnline(tmp_data, 512, &frame_no);
 		rtos_time_delay_ms(5);
 		tmp1=((short *)tmp_data)[0];
 		if(tmp2!=tmp1)
@@ -270,6 +273,7 @@ int32_t Start(void)
 	LOGD("%s Enter", __FUNCTION__);
 	int32_t ret = 0;
 	g_thread_running = true;
+	g_mic_data_cnt = 0;
 	if (rtos_task_create(NULL, ((const char *)"RecordLoop"), RecordLoop, NULL, 1024 * 4, 5) != SUCCESS) {
 		LOGE("\n\r%s rtos_task_create(RecordLoop) failed", __FUNCTION__);
 	}
