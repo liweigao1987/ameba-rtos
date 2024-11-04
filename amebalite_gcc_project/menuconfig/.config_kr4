@@ -3,7 +3,8 @@
 #
 # < CONFIG DSP Enable
 #
-# CONFIG_DSP_EN is not set
+CONFIG_DSP_EN=y
+# CONFIG_DSP_WITHIN_APP_IMG is not set
 
 #
 # < CONFIG TrustZone
@@ -127,7 +128,9 @@ CONFIG_MBED_TLS_ENABLED=y
 #
 # < CONFIG IPC Message Queue
 #
-# CONFIG_IMQ_EN is not set
+CONFIG_IMQ_EN=y
+CONFIG_RPC_EN=y
+# CONFIG_IMQ2_TEST is not set
 
 #
 # < To set debug msg flag
