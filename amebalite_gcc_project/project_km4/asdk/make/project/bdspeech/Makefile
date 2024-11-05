@@ -17,6 +17,7 @@ MODULE_IFLAGS += -I$(CSRC_DIR)/connection/io_watch/
 MODULE_IFLAGS += -I$(CSRC_DIR)/connection/state/
 MODULE_IFLAGS += -I$(CSRC_DIR)/connection/strategy/
 MODULE_IFLAGS += -I$(CSRC_DIR)/dsp/
+MODULE_IFLAGS += -I$(CSRC_DIR)/dsp/rpc/
 MODULE_IFLAGS += -I$(CSRC_DIR)/hardware/dsp_feature/
 MODULE_IFLAGS += -I$(CSRC_DIR)/include/
 MODULE_IFLAGS += -I$(CSRC_DIR)/log/
@@ -36,6 +37,9 @@ MODULE_IFLAGS += -I$(BASEDIR)/component/audio/interfaces
 MODULE_IFLAGS += -I$(BASEDIR)/component/soc/amebalite/swlib/
 MODULE_IFLAGS += -I$(BASEDIR)/component/audio/third_party/libopus/include/
 MODULE_IFLAGS += -I$(BASEDIR)/component/wifi/api/
+MODULE_IFLAGS += -I$(BASEDIR)/component/utils/ipc/rpc/include/
+MODULE_IFLAGS += -I$(BASEDIR)/component/utils/ipc/rpc/src/aidl/
+MODULE_IFLAGS += -I$(BASEDIR)/component/example/bdspeech/
 # MODULE_IFLAGS += -I$(BASEDIR)/component/soc/amebalite/fwlib/include/
 
 #set your source code path here
@@ -54,6 +58,7 @@ CSRC +=	\
 	$(wildcard $(CSRC_DIR)/connection/state/*.c) \
 	$(wildcard $(CSRC_DIR)/connection/strategy/*.c) \
 	$(wildcard $(CSRC_DIR)/dsp/*.c) \
+	$(wildcard $(CSRC_DIR)/dsp/rpc/*.c) \
 	$(wildcard $(CSRC_DIR)/hardware/dsp_feature/*.c) \
 	$(wildcard $(CSRC_DIR)/log/*.c) \
 	$(wildcard $(CSRC_DIR)/online_engine/*.c) \
