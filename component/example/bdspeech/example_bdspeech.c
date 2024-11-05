@@ -1,6 +1,7 @@
 #define LOG_TAG "bds_demo"
 
 #include "example_bdspeech.h"
+
 #include "FreeRTOS.h"
 #include "task.h"
 
@@ -12,7 +13,7 @@ u32 test_bdspeech(u16 argc, u8* argv[]) {
     test_config_sdk(g_speech);
     test_start_sdk(g_speech);
     test_start_link(g_speech);
-    /* test_start_wakeup(g_speech); */
+    test_start_wakeup(g_speech);
     return 0;
 }
 

@@ -2,7 +2,8 @@
 /*
  * < CONFIG DSP Enable
  */
-#undef  CONFIG_DSP_EN
+#define CONFIG_DSP_EN 1
+#undef  CONFIG_DSP_WITHIN_APP_IMG
 
 /*
  * < CONFIG TrustZone
@@ -122,9 +123,16 @@
 #undef  CONFIG_OPUS_LIB
 
 /*
+ * < GUI Config
+ */
+#undef  CONFIG_GUI_EN
+
+/*
  * < CONFIG IPC Message Queue
  */
-#undef  CONFIG_IMQ_EN
+#define CONFIG_IMQ_EN 1
+#define CONFIG_RPC_EN 1
+#undef  CONFIG_IMQ2_TEST
 
 /*
  * < To set debug msg flag

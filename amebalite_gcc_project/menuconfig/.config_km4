@@ -122,23 +122,43 @@ CONFIG_MBED_TLS_ENABLED=y
 # CONFIG_SSL_ROM_TEST is not set
 
 #
-# < GUI Config
-#
-# CONFIG_GUI_EN is not set
-
-#
 # < Audio Config
 #
 CONFIG_AUDIO_FWK=y
 CONFIG_AUDIO_MIXER=y
 # CONFIG_AUDIO_PASSTHROUGH is not set
-# CONFIG_MEDIA_PLAYER is not set
+CONFIG_MEDIA_PLAYER=y
+
+#
+#     Demux
+#
+# CONFIG_MEDIA_DEMUX_WAV is not set
+CONFIG_MEDIA_DEMUX_MP3=y
+# CONFIG_MEDIA_DEMUX_AAC is not set
+# CONFIG_MEDIA_DEMUX_MP4 is not set
+# CONFIG_MEDIA_DEMUX_FLAC is not set
+# CONFIG_MEDIA_DEMUX_OGG is not set
+
+#
+#     Codec
+#
+# CONFIG_MEDIA_CODEC_PCM is not set
+CONFIG_MEDIA_CODEC_MP3=y
+# CONFIG_MEDIA_CODEC_HAAC is not set
+# CONFIG_MEDIA_CODEC_VORBIS is not set
+# CONFIG_MEDIA_CODEC_OPUS is not set
 
 #
 # Third Party Lib
 #
 # CONFIG_SPEEX_LIB is not set
 CONFIG_OPUS_LIB=y
+CONFIG_AUDIO_FWK=y
+
+#
+# < GUI Config
+#
+# CONFIG_GUI_EN is not set
 
 #
 # < CONFIG IPC Message Queue

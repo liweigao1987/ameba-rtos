@@ -2,7 +2,8 @@
 /*
  * < CONFIG DSP Enable
  */
-#undef  CONFIG_DSP_EN
+#define CONFIG_DSP_EN 1
+#undef  CONFIG_DSP_WITHIN_APP_IMG
 
 /*
  * < CONFIG TrustZone
@@ -118,28 +119,51 @@
 #undef  CONFIG_SSL_ROM_TEST
 
 /*
- * < GUI Config
- */
-#undef  CONFIG_GUI_EN
-
-/*
  * < Audio Config
  */
 #define CONFIG_AUDIO_FWK 1
 #define CONFIG_AUDIO_MIXER 1
 #undef  CONFIG_AUDIO_PASSTHROUGH
-#undef  CONFIG_MEDIA_PLAYER
+#define CONFIG_MEDIA_PLAYER 1
+
+/*
+ *     Demux
+ */
+#undef  CONFIG_MEDIA_DEMUX_WAV
+#define CONFIG_MEDIA_DEMUX_MP3 1
+#undef  CONFIG_MEDIA_DEMUX_AAC
+#undef  CONFIG_MEDIA_DEMUX_MP4
+#undef  CONFIG_MEDIA_DEMUX_FLAC
+#undef  CONFIG_MEDIA_DEMUX_OGG
+
+/*
+ *     Codec
+ */
+#undef  CONFIG_MEDIA_CODEC_PCM
+#define CONFIG_MEDIA_CODEC_MP3 1
+#undef  CONFIG_MEDIA_CODEC_HAAC
+#undef  CONFIG_MEDIA_CODEC_VORBIS
+#undef  CONFIG_MEDIA_CODEC_OPUS
 
 /*
  * Third Party Lib
  */
 #undef  CONFIG_SPEEX_LIB
 #define CONFIG_OPUS_LIB 1
+#define CONFIG_AUDIO_FWK 1
+
+/*
+ * < GUI Config
+ */
+#undef  CONFIG_GUI_EN
 
 /*
  * < CONFIG IPC Message Queue
  */
-#undef  CONFIG_IMQ_EN
+#define CONFIG_IMQ_EN 1
+#define CONFIG_RPC_EN 1
+#undef  CONFIG_IMQ2_TEST
+#define CONFIG_IPC_MSG_MASTER 1
 
 /*
  * < To set debug msg flag
