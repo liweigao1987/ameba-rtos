@@ -8,6 +8,7 @@
 #include <stdarg.h>
 #include "diag.h"
 #include "os_wrapper.h"
+#include "ameba_soc.h"
 
 #ifdef ARM_CORE_CA32
 /* include apcore/spinlock.h for padding a cache line fully*/
@@ -69,6 +70,11 @@ extern int vprintf(const char *fmt, va_list ap);
 
 int __wrap_printf(const char *__restrict fmt, ...)
 {
+#if defined(IMAGE2_BUILD)
+	while (IPC_SEMTake(IPC_SEM_CRYPTO, 0xFFFFFFFF) != _TRUE) {
+		//RTK_LOGE(TAG, "ipsec get hw sema fail\n");
+  }
+#endif
 	int ret;
 	va_list ap;
 
@@ -87,7 +93,9 @@ int __wrap_printf(const char *__restrict fmt, ...)
 #ifdef ARM_CORE_CA32
 	spin_unlock_irqrestore(&print_lock, isr_status);
 #endif
-
+#if defined(IMAGE2_BUILD)
+	IPC_SEMFree(IPC_SEM_CRYPTO);
+#endif
 	return ret;
 }
 

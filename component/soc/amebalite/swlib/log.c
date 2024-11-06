@@ -249,9 +249,17 @@ void rtk_log_memory_dump2char(const char *src_buff, uint32_t buff_len)
  */
 void rtk_log_write(rtk_log_level_t level, const char *tag, const char letter, const char *fmt, ...)
 {
+#if defined(IMAGE2_BUILD)
+	while (IPC_SEMTake(IPC_SEM_CRYPTO, 0xFFFFFFFF) != _TRUE) {
+        //RTK_LOGE(TAG, "ipsec get hw sema fail\n");
+    }
+#endif
 	rtk_log_level_t level_of_tag = rtk_log_level_get(tag);
 	va_list ap;
 	if (level_of_tag < level) {
+		#if defined(IMAGE2_BUILD)
+		IPC_SEMFree(IPC_SEM_CRYPTO);
+		#endif
 		return;
 	}
 	if (tag[0] != '#') {
@@ -260,4 +268,7 @@ void rtk_log_write(rtk_log_level_t level, const char *tag, const char letter, co
 	va_start(ap, fmt);
 	DiagVprintf(fmt, ap);
 	va_end(ap);
+#if defined(IMAGE2_BUILD)
+	IPC_SEMFree(IPC_SEM_CRYPTO);
+#endif
 }
