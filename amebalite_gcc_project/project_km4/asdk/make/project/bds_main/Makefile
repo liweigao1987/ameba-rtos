@@ -29,7 +29,7 @@ MODULE_IFLAGS += -I$(BASEDIR)/component/bds_light_sdk/tool/
 #set your source code path here
 # CUSTOMER_DIR = $(ROOTDIR)/make/project/bdspeech
 
-TARGET_LIB = lib_bds_main.a
+TARGET_LIB = lib_bds_main
 #*****************************************************************************#
 #                               Source FILE LIST                              #
 #*****************************************************************************#
