@@ -11,6 +11,11 @@ vpath %.c $(shell find -L $(CSRC_DIR) -type d)
 
 #add your include path here
 MODULE_IFLAGS += -I$(CSRC_DIR)/
+MODULE_IFLAGS += -I$(CSRC_DIR)/context/
+MODULE_IFLAGS += -I$(CSRC_DIR)/net/
+MODULE_IFLAGS += -I$(CSRC_DIR)/player/
+MODULE_IFLAGS += -I$(CSRC_DIR)/rpc/
+MODULE_IFLAGS += -I$(CSRC_DIR)/speech/
 MODULE_IFLAGS += -I$(FREERTOSDIR)/include/
 MODULE_IFLAGS               += -I$(FREERTOSDIR)/portable/GCC/AmebaLite_KM4/non_secure
 MODULE_IFLAGS               += -I$(FREERTOSDIR)/portable/GCC/AmebaLite_KM4/secure
@@ -22,6 +27,7 @@ MODULE_IFLAGS += -I$(BASEDIR)/component/wifi/api/
 MODULE_IFLAGS += -I$(BASEDIR)/component/utils/ipc/rpc/include/
 MODULE_IFLAGS += -I$(BASEDIR)/component/utils/ipc/rpc/src/aidl/
 MODULE_IFLAGS += -I$(BASEDIR)/component/example/bdspeech/
+MODULE_IFLAGS += -I$(BASEDIR)/component/bds_light_sdk/include/
 MODULE_IFLAGS += -I$(BASEDIR)/component/bds_light_sdk/log/
 MODULE_IFLAGS += -I$(BASEDIR)/component/bds_light_sdk/tool/
 # MODULE_IFLAGS += -I$(BASEDIR)/component/soc/amebalite/fwlib/include/
@@ -36,6 +42,11 @@ TARGET_LIB = lib_bds_main
 #add your source code here
 CSRC +=	\
 	$(wildcard $(CSRC_DIR)/*.c) \
+	$(wildcard $(CSRC_DIR)/context/*.c) \
+	$(wildcard $(CSRC_DIR)/net/*.c) \
+	$(wildcard $(CSRC_DIR)/player/*.c) \
+	$(wildcard $(CSRC_DIR)/rpc/*.c) \
+	$(wildcard $(CSRC_DIR)/speech/*.c) \
 
 # vpath %.c $(CSRC_DIR)/bdspeech
 # CSRC +=	$(CSRC_DIR)/bdspeech/test_lwg.c
