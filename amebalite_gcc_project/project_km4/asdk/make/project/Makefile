@@ -10,12 +10,14 @@ COMPONENT += sram
 COMPONENT += library
 COMPONENT += src
 COMPONENT += bdspeech
+COMPONENT += bds_main
 
 COMPONENT_CLEAN := xip
 COMPONENT_CLEAN += sram
 COMPONENT_CLEAN += library
 COMPONENT_CLEAN += src
 COMPONENT_CLEAN += bdspeech
+COMPONENT_CLEAN += bds_main
 
 #*****************************************************************************#
 #                        RULES TO GENERATE TARGETS                            #

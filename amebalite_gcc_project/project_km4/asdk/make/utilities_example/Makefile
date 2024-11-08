@@ -14,6 +14,7 @@ MODULE_IFLAGS               += -I$(FREERTOSDIR)/include
 MODULE_IFLAGS               += -I$(FREERTOSDIR)/portable/GCC/AmebaLite_KM4/non_secure
 MODULE_IFLAGS               += -I$(FREERTOSDIR)/portable/GCC/AmebaLite_KM4/secure
 MODULE_IFLAGS               += -I$(BASEDIR)/component/bds_light_sdk/include
+MODULE_IFLAGS               += -I$(BASEDIR)/component/bds_main/
 .PHONY: all clean
 
 ifeq ($(CONFIG_MEDIA_PLAYER),y)
