@@ -4,12 +4,14 @@
 #include "bds_client_command.h"
 #include "bds_client_context.h"
 #include "bds_client_event.h"
-#include "bds_client_params.h"
-#include "bds_common_utility.h"
 #include "bds_client_log.h"
 #include "bds_client_memory.h"
+#include "bds_client_params.h"
+#include "bds_common_utility.h"
 
 #define TAG "speech"
+
+extern char* get_wifi_mac();
 
 typedef struct {
     bds_main_ctx_h      ctx;
@@ -121,7 +123,7 @@ static int32_t event_callback(bds_client_event_t* event, bds_speech_t* h) {
     return 0;
 }
 
-static void config_sdk(void* handle) {
+static void config_sdk(bds_client_handle_t client) {
     char sn[37];
     bds_generate_uuid(sn);
     char*                 pam_data      = get_dcs_pam();
@@ -137,26 +139,9 @@ static void config_sdk(void* handle) {
 
     bds_client_params_t params = {0};
     params.engine_params       = engine_params;
-    bds_client_config(handle, &params);
+    bds_client_config(client, &params);
     bdsc_engine_params_destroy(engine_params);
     bdsc_free(pam_data);
-}
-
-static void start_wakeup(void* handle) {
-    bdsc_wp_params_t     params       = {0};
-    bds_client_command_t wakeup_start = {
-        .key            = CMD_WAKEUP_START,
-        .content        = &params,
-        .content_length = sizeof(bdsc_wp_params_t),
-    };
-    bds_client_send(handle, &wakeup_start);
-}
-
-static void stop_wakeup(void* handle) {
-    bds_client_command_t wakeup_stop = {
-        .key = CMD_WAKEUP_STOP,
-    };
-    bds_client_send(handle, &wakeup_stop);
 }
 
 bds_speech_h bds_speech_create(bds_main_ctx_h ctx) {
@@ -167,7 +152,7 @@ bds_speech_h bds_speech_create(bds_main_ctx_h ctx) {
     bds_set_log_level(3);
     config_sdk(h->client);
     bds_client_start(h->client);
-    start_wakeup(h->client);
+    bds_speech_start_wp(h);
     return h;
 }
 
@@ -182,4 +167,66 @@ void bds_speech_destroy(bds_speech_h handle) {
         h->client = NULL;
     }
     bdsc_free(handle);
+}
+
+void bds_speech_start_link(bds_speech_h handle) {
+    bds_speech_t*        h          = handle;
+    bds_client_command_t link_start = {
+        .key            = CMD_LINK_START,
+        .content        = NULL,
+        .content_length = 0,
+    };
+    bds_client_send(h->client, &link_start);
+}
+
+void bds_speech_stop_link(bds_speech_h handle) {
+    bds_speech_t*        h         = handle;
+    bds_client_command_t link_stop = {
+        .key            = CMD_LINK_STOP,
+        .content        = NULL,
+        .content_length = 0,
+    };
+    bds_client_send(h->client, &link_stop);
+}
+
+void bds_speech_start_wp(bds_speech_h handle) {
+    bds_speech_t*        h            = handle;
+    bdsc_wp_params_t     params       = {0};
+    bds_client_command_t wakeup_start = {
+        .key            = CMD_WAKEUP_START,
+        .content        = &params,
+        .content_length = sizeof(bdsc_wp_params_t),
+    };
+    bds_client_send(h->client, &wakeup_start);
+}
+
+void bds_speech_stop_wp(bds_speech_h handle) {
+    bds_speech_t*        h           = handle;
+    bds_client_command_t wakeup_stop = {
+        .key = CMD_WAKEUP_STOP,
+    };
+    bds_client_send(h->client, &wakeup_stop);
+}
+
+void bds_speech_start_asr(bds_speech_h handle, int back_time) {
+    bds_speech_t* h = handle;
+    char          sn[37];
+    bds_generate_uuid(sn);
+    bdsc_asr_params_t* asr_params =
+        bdsc_asr_params_create(sn, 1775, "com.baidu.iot", get_wifi_mac(), back_time, 0, BDS_ASR_CONTACT_OFF, 0, NULL);
+    bds_client_command_t asr_start = {
+        .key            = CMD_ASR_START,
+        .content        = asr_params,
+        .content_length = sizeof(bdsc_asr_params_t),
+    };
+    bds_client_send(h->client, &asr_start);
+    bdsc_asr_params_destroy(asr_params);
+}
+
+void bds_speech_cancel_asr(bds_speech_h handle) {
+    bds_speech_t*        h          = handle;
+    bds_client_command_t asr_cancel = {
+        .key = CMD_ASR_CANCEL,
+    };
+    bds_client_send(h->client, &asr_cancel);
 }

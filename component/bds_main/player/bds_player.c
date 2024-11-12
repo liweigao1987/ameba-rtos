@@ -9,6 +9,7 @@
 #include "bdsc_executor.h"
 #include "cJSON.h"
 #include "vfs.h"
+#include "bds_macro.h"
 
 #define TAG            "player"
 #define AUDIO_DIR      "/audio"
@@ -16,6 +17,7 @@
 #define KEY_ZAI_NE     "zai_ne"
 
 typedef struct {
+    bds_main_ctx_h       ctx;
     cJSON*               cfg_root;
     FILE*                wp_audio;
     int                  wp_audio_size;
@@ -23,10 +25,17 @@ typedef struct {
     bds_player_service_h pservice;
 } bds_player_t;
 
-bds_player_h bds_player_create() {
-    bds_player_t* h = bdsc_malloc(sizeof(bds_player_t));
-    h->executor     = bdsc_executor_create("player_exe", 3);
-    h->pservice     = bds_player_service_create();
+bds_player_h bds_player_create(bds_main_ctx_h ctx) {
+    bds_player_t* h                 = bdsc_malloc(sizeof(bds_player_t));
+    h->ctx                          = ctx;
+    bdsc_executor_param_t exe_param = {
+        .name       = "player_exe",
+        .capacity   = 3,
+        .stack_size = 10 * 1024,
+        .priority   = BDS_THREAD_PRIORITY_DEFAULT,
+    };
+    h->executor = bdsc_executor_create(&exe_param);
+    h->pservice = bds_player_service_create();
     return h;
 }
 

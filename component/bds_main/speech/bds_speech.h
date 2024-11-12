@@ -19,6 +19,18 @@ bds_speech_h bds_speech_create(bds_main_ctx_h ctx);
 
 void bds_speech_destroy(bds_speech_h handle);
 
+void bds_speech_start_link(bds_speech_h handle);
+
+void bds_speech_stop_link(bds_speech_h handle);
+
+void bds_speech_start_wp(bds_speech_h handle);
+
+void bds_speech_stop_wp(bds_speech_h handle);
+
+void bds_speech_start_asr(bds_speech_h handle, int back_time);
+
+void bds_speech_cancel_asr(bds_speech_h handle);
+
 #ifdef __cplusplus
 }
 #endif
