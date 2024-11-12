@@ -11,6 +11,7 @@ vpath %.c $(shell find -L $(CSRC_DIR) -type d)
 
 #add your include path here
 MODULE_IFLAGS += -I$(CSRC_DIR)/
+MODULE_IFLAGS += -I$(CSRC_DIR)/audio/
 MODULE_IFLAGS += -I$(CSRC_DIR)/context/
 MODULE_IFLAGS += -I$(CSRC_DIR)/net/
 MODULE_IFLAGS += -I$(CSRC_DIR)/player/
@@ -22,6 +23,7 @@ MODULE_IFLAGS               += -I$(FREERTOSDIR)/portable/GCC/AmebaLite_KM4/secur
 MODULE_IFLAGS               += -I$(BASEDIR)/component/network/cJSON
 MODULE_IFLAGS += -I$(BASEDIR)/component/audio/interfaces
 MODULE_IFLAGS += -I$(BASEDIR)/component/soc/amebalite/swlib/
+MODULE_IFLAGS += -I$(BASEDIR)/component/audio/interfaces/
 MODULE_IFLAGS += -I$(BASEDIR)/component/audio/third_party/libopus/include/
 MODULE_IFLAGS += -I$(BASEDIR)/component/wifi/api/
 MODULE_IFLAGS += -I$(BASEDIR)/component/utils/ipc/rpc/include/

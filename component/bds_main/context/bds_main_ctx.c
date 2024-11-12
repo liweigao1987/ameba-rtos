@@ -21,6 +21,7 @@ bds_main_ctx_h bds_main_ctx_create() {
     h->executor       = bdsc_executor_create("main_exe", 100);
     h->speech         = bds_speech_create(h);
     h->player = bds_player_create();
+    bds_player_load_cfg(h->player);
     return h;
 }
 
