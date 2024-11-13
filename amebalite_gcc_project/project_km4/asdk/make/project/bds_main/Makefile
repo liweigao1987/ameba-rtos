@@ -13,6 +13,7 @@ vpath %.c $(shell find -L $(CSRC_DIR) -type d)
 MODULE_IFLAGS += -I$(CSRC_DIR)/
 MODULE_IFLAGS += -I$(CSRC_DIR)/audio/
 MODULE_IFLAGS += -I$(CSRC_DIR)/context/
+MODULE_IFLAGS += -I$(CSRC_DIR)/file/
 MODULE_IFLAGS += -I$(CSRC_DIR)/net/
 MODULE_IFLAGS += -I$(CSRC_DIR)/player/
 MODULE_IFLAGS += -I$(CSRC_DIR)/rpc/
@@ -45,6 +46,7 @@ TARGET_LIB = lib_bds_main
 CSRC +=	\
 	$(wildcard $(CSRC_DIR)/*.c) \
 	$(wildcard $(CSRC_DIR)/context/*.c) \
+	$(wildcard $(CSRC_DIR)/file/*.c) \
 	$(wildcard $(CSRC_DIR)/net/*.c) \
 	$(wildcard $(CSRC_DIR)/player/*.c) \
 	$(wildcard $(CSRC_DIR)/rpc/*.c) \

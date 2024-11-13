@@ -74,7 +74,8 @@ void bds_mc_submit_wp(bds_main_ctx_h handle, bdsc_event_wakeup_t* event) {
 }
 
 static void direct_trigger_run(bds_main_ctx_t* h, bdsc_event_direct_t* event) {
-    bdsc_logw(TAG, "executor direct=%s!", event->keywords);
+    bdsc_logw(TAG, "executor direct=%s", event->keywords);
+    bds_player_direct_play(h->player, event->keywords);
 }
 
 void bds_mc_submit_direct(bds_main_ctx_h handle, bdsc_event_direct_t* event) {

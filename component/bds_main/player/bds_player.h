@@ -23,6 +23,8 @@ int bds_player_load_cfg(bds_player_h handle);
 
 int bds_player_wp_play(bds_player_h handle);
 
+int bds_player_direct_play(bds_player_h handle, char* code);
+
 #ifdef __cplusplus
 }
 #endif
