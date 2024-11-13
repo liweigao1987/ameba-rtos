@@ -32,7 +32,7 @@ bds_player_h bds_player_create(bds_main_ctx_h ctx) {
         .name       = "player_exe",
         .capacity   = 3,
         .stack_size = 10 * 1024,
-        .priority   = BDS_THREAD_PRIORITY_DEFAULT,
+        .priority   = BDS_THREAD_PRIORITY_HIGH,
     };
     h->executor = bdsc_executor_create(&exe_param);
     h->pservice = bds_player_service_create();
@@ -105,9 +105,15 @@ static void wp_play_run(bds_player_t* h, void* param) {
     fseek(h->wp_audio, 0, SEEK_SET);
     bds_audio_bag_t audio;
     int             quot = h->wp_audio_size / PCM_BAG_BYTES;
+    bdsc_logw(TAG, "quot=%d", quot);
+    int ret = 0;
     for (int i = 0; i < quot; i++) {
-        fread(audio.audio, 1, PCM_BAG_BYTES, h->wp_audio);
+        ret = fread(audio.audio, 1, PCM_BAG_BYTES, h->wp_audio);
+        if (ret != PCM_BAG_BYTES) {
+            bdsc_loge(TAG, "fread failed! %d:%d", ret, PCM_BAG_BYTES);
+        }
         bds_ps_put_audio(h->pservice, &audio);
+        /* bds_ps_passthrough_audio(h->pservice, &audio); */
     }
 }
 

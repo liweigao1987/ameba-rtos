@@ -16,7 +16,7 @@ extern "C" {
 #define AUDIO_SR      16000
 #define AUDIO_FORMAT  RTAUDIO_FORMAT_PCM_16_BIT
 #define AUDIO_CH      1
-#define PCM_BAG_BYTES 640
+#define PCM_BAG_BYTES 1024
 
 typedef struct {
     uint8_t audio[PCM_BAG_BYTES];

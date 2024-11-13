@@ -13,7 +13,7 @@
 extern "C" {
 #endif
 
-#define AUDIO_RB_SIZE (PCM_BAG_BYTES * 100)
+#define AUDIO_RB_SIZE (PCM_BAG_BYTES * 60)
 
 #ifdef __cplusplus
 }

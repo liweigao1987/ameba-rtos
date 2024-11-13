@@ -21,6 +21,8 @@ void bds_player_service_destroy(bds_player_service_h handle);
 
 int bds_ps_put_audio(bds_player_service_h handle, bds_audio_bag_t* audio);
 
+int bds_ps_passthrough_audio(bds_player_service_h handle, bds_audio_bag_t* audio);
+
 #ifdef __cplusplus
 }
 #endif

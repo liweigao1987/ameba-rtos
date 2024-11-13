@@ -8,10 +8,10 @@
 #include "bds_client_log.h"
 #include "bds_client_memory.h"
 #include "bds_macro.h"
+#include "bds_player_type.h"
 #include "bds_ringbuffer.h"
 #include "bds_task.h"
 #include "common/audio_errnos.h"
-#include "bds_player_type.h"
 
 #define TAG "player_service"
 
@@ -35,10 +35,11 @@ static void init_audio_track(bds_player_service_t* h) {
     cfg.channel_count = AUDIO_CH;
     cfg.buffer_bytes  = h->mbb;
     RTAudioTrack_Init(h->audio_track, &cfg, RTAUDIO_OUTPUT_FLAG_NONE);
-    RTAudioTrack_SetVolume(h->audio_track, 1.0, 1.0);
-    RTAudioTrack_SetStartThresholdBytes(h->audio_track, h->mbb);
-    uint32_t track_start_threshold = RTAudioTrack_GetStartThresholdBytes(h->audio_track);
-    bdsc_logw(TAG, "start threshold=%u", track_start_threshold);
+    /* RTAudioTrack_SetVolume(h->audio_track, 1.0, 1.0); */  // use passthrough mode
+    RTAudioControl_SetHardwareVolume(1.0, 1.0);
+    /* RTAudioTrack_SetStartThresholdBytes(h->audio_track, h->mbb); */
+    /* uint32_t track_start_threshold = RTAudioTrack_GetStartThresholdBytes(h->audio_track); */
+    /* bdsc_logw(TAG, "start threshold=%u", track_start_threshold); */
 }
 static void ps_run(bds_player_service_t* h) {
     bdsc_logw(TAG, "ps_run +");
@@ -56,7 +57,10 @@ static void ps_run(bds_player_service_t* h) {
         if (ret != need_bytes) {
             bdsc_loge(TAG, "take audiorb failed! %d!=%d", ret, need_bytes);
         }
-        RTAudioTrack_Write(h->audio_track, audio.audio, need_bytes, true);
+        ret = RTAudioTrack_Write(h->audio_track, audio.audio, need_bytes, true);
+        if (ret != need_bytes) {
+            bdsc_loge(TAG, "audiotrack write failed! ret=%d", ret);
+        }
     }
     RTAudioTrack_Pause(h->audio_track);
     RTAudioTrack_Flush(h->audio_track);
@@ -95,6 +99,16 @@ int bds_ps_put_audio(bds_player_service_h handle, bds_audio_bag_t* audio) {
     int                   ret        = bds_ringbuffer_put_timeout(h->audio_rb, audio, need_bytes, portMAX_DELAY);
     if (ret != 0) {
         bdsc_loge(TAG, "player service put failed! ret=%d", ret);
+    }
+    return ret;
+}
+
+int bds_ps_passthrough_audio(bds_player_service_h handle, bds_audio_bag_t* audio) {
+    bds_player_service_t* h          = handle;
+    int                   need_bytes = sizeof(audio->audio);
+    int                   ret        = RTAudioTrack_Write(h->audio_track, audio->audio, need_bytes, true);
+    if (ret != need_bytes) {
+        bdsc_loge(TAG, "audiotrack write failed! ret=%d", ret);
     }
     return ret;
 }
