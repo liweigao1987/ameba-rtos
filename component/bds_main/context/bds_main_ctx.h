@@ -21,7 +21,9 @@ void bds_main_ctx_destroy(bds_main_ctx_h handle);
 
 void bds_mc_submit_wp(bds_main_ctx_h handle, bdsc_event_wakeup_t* event);
 
-    void bds_mc_submit_wifi_connected(bds_main_ctx_h handle);
+void bds_mc_submit_direct(bds_main_ctx_h handle, bdsc_event_direct_t* event);
+
+void bds_mc_submit_wifi_connected(bds_main_ctx_h handle);
 
 #ifdef __cplusplus
 }
