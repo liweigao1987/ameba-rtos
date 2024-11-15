@@ -78,7 +78,7 @@ static struct AudioHwCard *AmebaOpenCard(struct AudioHwManager *manager, const s
 	}
 
 	if (desc->type == AUDIO_HW_CARD_TYPE_PRIMARY) {
-		HAL_AUDIO_VERBOSE("OpenCard(type:%d) %s", desc->type, ret ? "failed" : "success");
+		HAL_AUDIO_VERBOSE("OpenCard(type:%d)", desc->type);
 		return CreatePrimaryAudioHwCard();
 	} else {
 		HAL_AUDIO_WARN("OpenCard: unsupported card(type:%d)", desc->type);

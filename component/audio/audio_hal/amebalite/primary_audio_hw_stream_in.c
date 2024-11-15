@@ -28,7 +28,7 @@
 
 #define NOIRQ_CAPTURE_PERIOD_SIZE     128
 #define CAPTURE_PERIOD_SIZE           1024
-#define CAPTURE_PERIOD_COUNT          4
+#define CAPTURE_PERIOD_COUNT          16
 #define AUDIO_CAPTURE_MODE            "cap_mode"
 #define MIC_CATEGORY                  "mic_category"
 // channels of pure data
