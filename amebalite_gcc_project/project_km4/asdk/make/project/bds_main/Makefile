@@ -12,12 +12,15 @@ vpath %.c $(shell find -L $(CSRC_DIR) -type d)
 #add your include path here
 MODULE_IFLAGS += -I$(CSRC_DIR)/
 MODULE_IFLAGS += -I$(CSRC_DIR)/audio/
+MODULE_IFLAGS += -I$(CSRC_DIR)/bdvs/
 MODULE_IFLAGS += -I$(CSRC_DIR)/context/
 MODULE_IFLAGS += -I$(CSRC_DIR)/file/
 MODULE_IFLAGS += -I$(CSRC_DIR)/net/
 MODULE_IFLAGS += -I$(CSRC_DIR)/player/
 MODULE_IFLAGS += -I$(CSRC_DIR)/rpc/
+MODULE_IFLAGS += -I$(CSRC_DIR)/session/
 MODULE_IFLAGS += -I$(CSRC_DIR)/speech/
+MODULE_IFLAGS += -I$(CSRC_DIR)/tool/
 MODULE_IFLAGS += -I$(FREERTOSDIR)/include/
 MODULE_IFLAGS               += -I$(FREERTOSDIR)/portable/GCC/AmebaLite_KM4/non_secure
 MODULE_IFLAGS               += -I$(FREERTOSDIR)/portable/GCC/AmebaLite_KM4/secure
@@ -45,12 +48,15 @@ TARGET_LIB = lib_bds_main
 #add your source code here
 CSRC +=	\
 	$(wildcard $(CSRC_DIR)/*.c) \
+	$(wildcard $(CSRC_DIR)/bdvs/*.c) \
 	$(wildcard $(CSRC_DIR)/context/*.c) \
 	$(wildcard $(CSRC_DIR)/file/*.c) \
 	$(wildcard $(CSRC_DIR)/net/*.c) \
 	$(wildcard $(CSRC_DIR)/player/*.c) \
 	$(wildcard $(CSRC_DIR)/rpc/*.c) \
+	$(wildcard $(CSRC_DIR)/session/*.c) \
 	$(wildcard $(CSRC_DIR)/speech/*.c) \
+	$(wildcard $(CSRC_DIR)/tool/*.c) \
 
 # vpath %.c $(CSRC_DIR)/bdspeech
 # CSRC +=	$(CSRC_DIR)/bdspeech/test_lwg.c

@@ -13,10 +13,11 @@
 #define TAG "ctx"
 
 typedef struct {
-    bdsc_executor_h   executor;
-    bds_speech_h      speech;
-    bds_player_h      player;
-    bds_net_manager_h net_manager;
+    bdsc_executor_h       executor;
+    bds_speech_h          speech;
+    bds_player_h          player;
+    bds_net_manager_h     net_manager;
+    bds_session_manager_h session_manager;
 } bds_main_ctx_t;
 
 bds_main_ctx_h bds_main_ctx_create() {
@@ -33,6 +34,7 @@ bds_main_ctx_h bds_main_ctx_create() {
     bds_player_load_cfg(h->player);
     h->net_manager = bds_net_manager_create(h);
     bds_nm_check_wifi_status(h->net_manager);
+    h->session_manager = bds_session_manager_create();
     return h;
 }
 
@@ -49,6 +51,10 @@ void bds_main_ctx_destroy(bds_main_ctx_h handle) {
         bds_player_destroy(h->player);
         h->player = NULL;
     }
+    if (h->session_manager) {
+        bds_session_manager_destroy(h->session_manager);
+        h->session_manager = NULL;
+    }
     if (h->net_manager) {
         bds_net_manager_destroy(h->net_manager);
         h->net_manager = NULL;
@@ -60,10 +66,18 @@ void bds_main_ctx_destroy(bds_main_ctx_h handle) {
     bdsc_free(handle);
 }
 
+bds_session_manager_h bds_mc_get_session_manager(bds_main_ctx_h handle) {
+    if (!handle) {
+        return NULL;
+    }
+    bds_main_ctx_t* h = handle;
+    return h->session_manager;
+}
+
 static void wp_trigger_run(bds_main_ctx_t* h, bdsc_event_wakeup_t* event) {
     bdsc_logw(TAG, "executor wp!");
-    bds_player_wp_play(h->player);
-    /* bds_speech_start_asr(h->speech, 0); */
+    /* bds_player_wp_play(h->player); */
+    bds_speech_start_asr(h->speech, 0);
 }
 
 void bds_mc_submit_wp(bds_main_ctx_h handle, bdsc_event_wakeup_t* event) {
