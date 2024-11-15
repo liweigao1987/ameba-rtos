@@ -1,5 +1,7 @@
 #include "bds_session.h"
 
+#include "bds_client_log.h"
+#include "bds_client_memory.h"
 #include "bds_session_type.h"
 
 #define TAG "session"
