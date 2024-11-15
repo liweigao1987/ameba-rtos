@@ -7,8 +7,8 @@
 #ifndef _BDS_SESSION_MANAGER_H_
 #define _BDS_SESSION_MANAGER_H_
 
-#include "bds_session_type.h"
 #include "bds_client_event.h"
+#include "bds_session_type.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -19,6 +19,8 @@ typedef void* bds_session_manager_h;
 bds_session_manager_h bds_session_manager_create();
 
 void bds_session_manager_destroy(bds_session_manager_h handle);
+
+bds_session_id_t* bds_sm_active_session_id(bds_session_manager_h handle);
 
 int bds_sm_create_session(bds_session_manager_h handle, bds_session_param_t* param);
 

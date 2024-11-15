@@ -27,7 +27,7 @@ void bds_speech_start_wp(bds_speech_h handle);
 
 void bds_speech_stop_wp(bds_speech_h handle);
 
-void bds_speech_start_asr(bds_speech_h handle, int back_time);
+void bds_speech_start_asr(bds_speech_h handle, int back_time, char* sn);
 
 void bds_speech_cancel_asr(bds_speech_h handle);
 

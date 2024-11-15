@@ -18,7 +18,7 @@ typedef struct {
 } bds_session_id_t;
 
 typedef struct {
-    int temp;
+    uint32_t create_tick;
 } bds_session_param_t;
 
 #ifdef __cplusplus

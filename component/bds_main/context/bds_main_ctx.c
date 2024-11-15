@@ -76,8 +76,12 @@ bds_session_manager_h bds_mc_get_session_manager(bds_main_ctx_h handle) {
 
 static void wp_trigger_run(bds_main_ctx_t* h, bdsc_event_wakeup_t* event) {
     bdsc_logw(TAG, "executor wp!");
+    bds_session_param_t param = {0};
+    param.create_tick         = bdsc_get_tick_count();
+    bds_sm_create_session(h->session_manager, &param);
     /* bds_player_wp_play(h->player); */
-    bds_speech_start_asr(h->speech, 0);
+    bds_session_id_t* id = bds_sm_active_session_id(h->session_manager);
+    bds_speech_start_asr(h->speech, 0, id->sn);
 }
 
 void bds_mc_submit_wp(bds_main_ctx_h handle, bdsc_event_wakeup_t* event) {

@@ -45,17 +45,17 @@ static int32_t event_callback(bds_client_event_t* event, bds_speech_t* h) {
             }
             case EVENT_ASR_EXTERN_DATA: {
                 bdsc_event_data_t* extern_result = (bdsc_event_data_t*)event->content;
-                char*              str           = bdsc_malloc(32);
-                memcpy(str, extern_result->buffer + 12, 31);
-                bdsc_logw(TAG, "sn=%s, idx=%d, len=%d, nlp=%s", extern_result->sn, extern_result->idx,
-                          extern_result->buffer_length, str);
+                int                len           = extern_result->buffer_length - 12;
+                char*              str           = bdsc_malloc(len + 1);
+                memcpy(str, extern_result->buffer + 12, len);
+                bdsc_logw(TAG, "sn=%s, idx=%d, len=%d, nlp=%s", extern_result->sn, extern_result->idx, len, str);
                 bdsc_free(str);
                 break;
             }
             case EVENT_ASR_TTS_DATA: {
-                bdsc_event_data_t* tts_data = (bdsc_event_data_t*)event->content;
-                /* bds_session_manager_h sm = bds_mc_get_session_manager(h->ctx); */
-                /* bds_sm_put_online_audio(sm, tts_data); */
+                bdsc_event_data_t*    tts_data = (bdsc_event_data_t*)event->content;
+                bds_session_manager_h sm       = bds_mc_get_session_manager(h->ctx);
+                bds_sm_put_online_audio(sm, tts_data);
                 break;
             }
             case EVENT_ASR_GENERAL_INFO: {
@@ -211,10 +211,8 @@ void bds_speech_stop_wp(bds_speech_h handle) {
     bds_client_send(h->client, &wakeup_stop);
 }
 
-void bds_speech_start_asr(bds_speech_h handle, int back_time) {
-    bds_speech_t* h = handle;
-    char          sn[37];
-    bds_generate_uuid(sn);
+void bds_speech_start_asr(bds_speech_h handle, int back_time, char* sn) {
+    bds_speech_t*        h          = handle;
     char*                pam        = bds_bdvs_get_pam();
     int                  pam_len    = strlen(pam) + 1;
     bdsc_asr_params_t*   asr_params = bdsc_asr_params_create(sn, BDS_PID, BDS_SPEECH_KEY, bds_get_udid(), back_time, 0,

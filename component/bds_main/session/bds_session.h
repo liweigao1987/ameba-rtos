@@ -7,8 +7,8 @@
 #ifndef _BDS_SESSION_H_
 #define _BDS_SESSION_H_
 
-#include "bds_session_type.h"
 #include "bds_client_event.h"
+#include "bds_session_type.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -16,11 +16,11 @@ extern "C" {
 
 typedef void* bds_session_h;
 
-bds_session_h bds_session_create(bds_session_param_t* param);
+bds_session_h bds_session_create(bds_session_param_t* param, bds_session_id_t* id);
 
 void bds_session_destroy(bds_session_h handle);
 
-    bds_session_id_t* bds_session_get_id(bds_session_h handle);
+bds_session_id_t* bds_session_get_id(bds_session_h handle);
 
 void bds_session_put_online_audio(bds_session_h handle, bdsc_event_data_t* data);
 
