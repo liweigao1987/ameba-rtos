@@ -39,8 +39,11 @@ static void ameba_audio_stream_rx_sport_init(CaptureStream **stream, StreamConfi
 	cstream->stream.sp_initstruct.SP_SelTDM = ameba_audio_get_sp_tdm(config.channels);
 	cstream->stream.sp_initstruct.SP_SelFIFO = ameba_audio_get_fifo_num(config.channels);
 	cstream->stream.sp_initstruct.SP_SR = ameba_audio_get_sp_rate(config.rate);
-	cstream->stream.sp_initstruct.SP_SelDataFormat = AUDIO_I2S_IN_DATA_FORMAT;
-
+	if(config.channels == 8){
+		cstream->stream.sp_initstruct.SP_SelDataFormat = 2;
+	}else{
+		cstream->stream.sp_initstruct.SP_SelDataFormat = 0;
+	}
 	if (AUDIO_I2S_IN_MULTIIO_EN == 1) {
 		cstream->stream.sp_initstruct.SP_SetMultiIO = SP_RX_MULTIIO_EN;
 	} else {
@@ -67,7 +70,7 @@ static void ameba_audio_stream_rx_sport_init(CaptureStream **stream, StreamConfi
 
 	AUDIO_SP_Init(cstream->stream.sport_dev_num, SP_DIR_RX, &cstream->stream.sp_initstruct);
 	if (cstream->stream.device == AMEBA_AUDIO_IN_I2S) {
-		if (AUDIO_I2S_IN_ROLE == AUDIO_I2S_SLAVE) {
+		if(config.channels != 8){
 			AUDIO_SP_SetMasterSlave(cstream->stream.sport_dev_num, SLAVE);
 		}
 	}

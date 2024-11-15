@@ -102,7 +102,7 @@
  *2 for SP_DF_PCM_A
  *3 for SP_DF_PCM_B
  */
-#define AUDIO_I2S_IN_DATA_FORMAT         0
+#define AUDIO_I2S_IN_DATA_FORMAT         2
 
 /*
  *Define I2S in sport index, for example, if I2S in using sport2, set 2 as value here.
@@ -125,18 +125,26 @@
  *0: master.
  *1: slave.
  */
-#define AUDIO_I2S_IN_ROLE                1
+#define AUDIO_I2S_IN_ROLE                0
 
 /*
  *Define I2S in pins.
  */
-#define AUDIO_I2S_IN_MCLK_PIN           _PA_11
+/*#define AUDIO_I2S_IN_MCLK_PIN           _PA_11
 #define AUDIO_I2S_IN_BCLK_PIN           _PA_26
 #define AUDIO_I2S_IN_LRCLK_PIN          _PA_21
 #define AUDIO_I2S_IN_DATA0_PIN          _PA_22
 #define AUDIO_I2S_IN_DATA1_PIN          _PA_23
 #define AUDIO_I2S_IN_DATA2_PIN          _PA_24
-#define AUDIO_I2S_IN_DATA3_PIN          _PA_25
+#define AUDIO_I2S_IN_DATA3_PIN          _PA_25*/
+
+#define AUDIO_I2S_IN_MCLK_PIN           _PA_11
+#define AUDIO_I2S_IN_BCLK_PIN           _PA_24
+#define AUDIO_I2S_IN_LRCLK_PIN          _PA_25
+#define AUDIO_I2S_IN_DATA0_PIN          _PA_26
+#define AUDIO_I2S_IN_DATA1_PIN          _PA_23
+#define AUDIO_I2S_IN_DATA2_PIN          _PA_22
+#define AUDIO_I2S_IN_DATA3_PIN          _PA_21
 
 #define AUDIO_I2S_IN_MULTIIO_EN         0
 

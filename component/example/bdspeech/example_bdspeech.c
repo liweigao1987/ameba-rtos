@@ -4,11 +4,15 @@
 
 #include "FreeRTOS.h"
 #include "task.h"
+extern bool is_guance;
 
 void* g_speech = NULL;
 
 u32 test_bdspeech(u16 argc, u8* argv[]) {
     printf("argc=%d, argv=%p\n", argc, argv);
+    if(argc >= 1 && !strcmp(argv[0], "1")){
+        is_guance = TRUE;
+    }
     g_speech = test_create_sdk();
     test_config_sdk(g_speech);
     test_start_sdk(g_speech);
