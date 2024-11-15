@@ -27,6 +27,10 @@ void bds_session_destroy(bds_session_h handle) {
 }
 
 bds_session_id_t* bds_session_get_id(bds_session_h handle) {
+    if (!handle) {
+        bdsc_loge(TAG, "invalid params! h=%p", handle);
+        return NULL;
+    }
     bds_session_t* h = handle;
     return &h->id;
 }

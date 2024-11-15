@@ -83,6 +83,7 @@ int bds_sm_create_session(bds_session_manager_h handle, bds_session_param_t* par
     bds_session_manager_t* h  = handle;
     bds_session_id_t       id = {0};
     bds_generate_uuid(id.sn);
+    bdsc_logw(TAG, "session sn=%s", id.sn);
     bds_session_h session = bds_session_create(param, &id);
     ListItem_t*   item    = bdsc_malloc(sizeof(ListItem_t));
     vListInitialiseItem(item);
