@@ -9,6 +9,7 @@
 
 #include "bds_client_event.h"
 #include "bds_session_type.h"
+#include "bds_tts_frame.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -23,6 +24,8 @@ void bds_session_destroy(bds_session_h handle);
 bds_session_id_t* bds_session_get_id(bds_session_h handle);
 
 void bds_session_put_online_audio(bds_session_h handle, bdsc_event_data_t* data);
+
+int bds_session_take_online_audio(bds_session_h handle, bds_tts_frame_t** data);
 
 #ifdef __cplusplus
 }

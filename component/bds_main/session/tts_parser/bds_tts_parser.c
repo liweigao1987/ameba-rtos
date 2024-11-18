@@ -92,7 +92,7 @@ void bds_tts_parser_on_frame(bds_tts_parser_t *handle) {
         handle->listener->on_tts_f(handle->frame, handle->listener->custom);
     }
     if (handle->frame) {
-        bds_tts_frame_destroy(handle->frame);
+        /* bds_tts_frame_destroy(handle->frame); */
         handle->frame = NULL;
     }
 }

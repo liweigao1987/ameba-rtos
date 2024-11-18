@@ -11,6 +11,7 @@
 #include "bds_client_event.h"
 #include "bds_tts_frame.h"
 #include "bds_client_log.h"
+#include "semphr.h"
 
 #define TAG         "tts_parser"
 

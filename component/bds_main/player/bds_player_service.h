@@ -7,7 +7,7 @@
 #ifndef _BDS_PLAYER_SERVICE_H_
 #define _BDS_PLAYER_SERVICE_H_
 
-#include "bds_audio_type.h"
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -19,9 +19,9 @@ bds_player_service_h bds_player_service_create();
 
 void bds_player_service_destroy(bds_player_service_h handle);
 
-int bds_ps_put_audio(bds_player_service_h handle, bds_audio_bag_t* audio);
+int bds_ps_put_audio(bds_player_service_h handle, uint8_t* audio, int len);
 
-int bds_ps_passthrough_audio(bds_player_service_h handle, bds_audio_bag_t* audio);
+int bds_ps_passthrough_audio(bds_player_service_h handle, uint8_t* audio, int len);
 
 #ifdef __cplusplus
 }

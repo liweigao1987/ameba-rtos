@@ -64,6 +64,7 @@ static int32_t event_callback(bds_client_event_t* event, bds_speech_t* h) {
             }
             case EVENT_ASR_END: {
                 bdsc_event_process_t* process = (bdsc_event_process_t*)event->content;
+                bds_mc_submit_online_play(h->ctx, process);
                 break;
             }
             case EVENT_EVENTUPLOAD_BEGIN: {
@@ -211,12 +212,12 @@ void bds_speech_stop_wp(bds_speech_h handle) {
     bds_client_send(h->client, &wakeup_stop);
 }
 
-void bds_speech_start_asr(bds_speech_h handle, int back_time, char* sn) {
+void bds_speech_start_asr(bds_speech_h handle, int back_time, bds_session_id_t* id) {
     bds_speech_t*        h          = handle;
     char*                pam        = bds_bdvs_get_pam();
     int                  pam_len    = strlen(pam) + 1;
-    bdsc_asr_params_t*   asr_params = bdsc_asr_params_create(sn, BDS_PID, BDS_SPEECH_KEY, bds_get_udid(), back_time, 0,
-                                                           BDS_ASR_CONTACT_OFF, pam_len, pam);
+    bdsc_asr_params_t*   asr_params = bdsc_asr_params_create(id->sn, BDS_PID, BDS_SPEECH_KEY, bds_get_udid(), back_time,
+                                                           0, BDS_ASR_CONTACT_OFF, pam_len, pam);
     bds_client_command_t asr_start  = {
         .key            = CMD_ASR_START,
         .content        = asr_params,

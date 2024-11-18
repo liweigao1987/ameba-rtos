@@ -28,6 +28,8 @@ void bds_mc_submit_direct(bds_main_ctx_h handle, bdsc_event_direct_t* event);
 
 void bds_mc_submit_wifi_connected(bds_main_ctx_h handle);
 
+void bds_mc_submit_online_play(bds_main_ctx_h handle, bdsc_event_process_t* event);
+
 #ifdef __cplusplus
 }
 #endif

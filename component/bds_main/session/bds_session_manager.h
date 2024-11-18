@@ -9,6 +9,7 @@
 
 #include "bds_client_event.h"
 #include "bds_session_type.h"
+#include "tts_parser/bds_tts_frame.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -20,7 +21,7 @@ bds_session_manager_h bds_session_manager_create();
 
 void bds_session_manager_destroy(bds_session_manager_h handle);
 
-bds_session_id_t* bds_sm_active_session_id(bds_session_manager_h handle);
+int bds_sm_active_session_id(bds_session_manager_h handle, bds_session_id_t* id);
 
 int bds_sm_create_session(bds_session_manager_h handle, bds_session_param_t* param);
 
@@ -28,11 +29,19 @@ void bds_sm_destroy_session(bds_session_manager_h handle, bds_session_id_t* id);
 
 void bds_sm_put_online_audio(bds_session_manager_h handle, bdsc_event_data_t* data);
 
+int bds_sm_take_online_audio(bds_session_manager_h handle, bds_session_id_t* id, bds_tts_frame_t** data);
+
 bds_session_id_t* bds_session_id_create(char* sn);
+
+bds_session_id_t* bds_session_id_create2(bds_session_id_t* id);
 
 void bds_session_id_destroy(bds_session_id_t* id);
 
 bool bds_session_is_same(bds_session_id_t* id1, bds_session_id_t* id2);
+
+void bds_session_id_clone(bds_session_id_t* dst, bds_session_id_t* src);
+
+void bds_session_id_build(bds_session_id_t* dst, char* sn);
 
 #ifdef __cplusplus
 }

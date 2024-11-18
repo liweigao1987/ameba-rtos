@@ -43,9 +43,14 @@ void bds_session_manager_destroy(bds_session_manager_h handle) {
     bdsc_free(handle);
 }
 
-bds_session_id_t* bds_sm_active_session_id(bds_session_manager_h handle) {
+int bds_sm_active_session_id(bds_session_manager_h handle, bds_session_id_t* id) {
     bds_session_manager_t* h = handle;
-    return h->active_session ? bds_session_get_id(h->active_session) : NULL;
+    if (!h->active_session) {
+        bdsc_logw(TAG, "no active session!");
+        return -10;
+    }
+    bds_session_id_clone(id, bds_session_get_id(h->active_session));
+    return 0;
 }
 
 static bds_session_h get_session(bds_session_manager_t* h, bds_session_id_t* id) {
@@ -124,7 +129,7 @@ EXIT:
 void bds_sm_put_online_audio(bds_session_manager_h handle, bdsc_event_data_t* data) {
     bds_session_manager_t* h  = handle;
     bds_session_id_t       id = {0};
-    memcpy(id.sn, data->sn, SN_LENGTH);
+    bds_session_id_build(&id, data->sn);
     bds_session_h session = get_session(h, &id);
     if (!session) {
         bdsc_loge(TAG, "no session! sn=%s", id.sn);
@@ -133,10 +138,30 @@ void bds_sm_put_online_audio(bds_session_manager_h handle, bdsc_event_data_t* da
     bds_session_put_online_audio(session, data);
 }
 
+int bds_sm_take_online_audio(bds_session_manager_h handle, bds_session_id_t* id, bds_tts_frame_t** data) {
+    bds_session_manager_t* h       = handle;
+    int                    ret     = 0;
+    bds_session_h          session = get_session(h, id);
+    if (!session) {
+        bdsc_loge(TAG, "no session! sn=%s", id->sn);
+        *data = NULL;
+        ret   = -10;
+        return ret;
+    }
+    ret = bds_session_take_online_audio(session, data);
+    return ret;
+}
+
 bds_session_id_t* bds_session_id_create(char* sn) {
     bds_session_id_t* id = bdsc_malloc(sizeof(bds_session_id_t));
     memcpy(id->sn, sn, SN_LENGTH);
     return id;
+}
+
+bds_session_id_t* bds_session_id_create2(bds_session_id_t* id) {
+    bds_session_id_t* dst = bdsc_malloc(sizeof(bds_session_id_t));
+    memcpy(dst, id, sizeof(bds_session_id_t));
+    return dst;
 }
 
 void bds_session_id_destroy(bds_session_id_t* id) {
@@ -153,4 +178,20 @@ bool bds_session_is_same(bds_session_id_t* id1, bds_session_id_t* id2) {
     } else {
         return false;
     }
+}
+
+void bds_session_id_clone(bds_session_id_t* dst, bds_session_id_t* src) {
+    if (!dst || !src) {
+        bdsc_loge(TAG, "invalid params! d=%p, s=%p", dst, src);
+        return;
+    }
+    memcpy(dst, src, sizeof(bds_session_id_t));
+}
+
+void bds_session_id_build(bds_session_id_t* dst, char* sn) {
+    if (!dst || !sn) {
+        bdsc_loge(TAG, "invalid params! d=%p, s=%p", dst, sn);
+        return;
+    }
+    memcpy(dst->sn, sn, SN_LENGTH);
 }

@@ -50,14 +50,14 @@ static void ps_run(bds_player_service_t* h) {
         vTaskDelete(NULL);
         return;
     }
-    bds_audio_bag_t audio;
-    int             need_bytes = sizeof(audio);
+    uint8_t audio[PCM_BAG_BYTES];
+    int     need_bytes = sizeof(audio);
     while (1) {
-        ret = bds_ringbuffer_take(h->audio_rb, &audio, need_bytes);
+        ret = bds_ringbuffer_take(h->audio_rb, audio, need_bytes);
         if (ret != need_bytes) {
             bdsc_loge(TAG, "take audiorb failed! %d!=%d", ret, need_bytes);
         }
-        ret = RTAudioTrack_Write(h->audio_track, audio.audio, need_bytes, true);
+        ret = RTAudioTrack_Write(h->audio_track, audio, need_bytes, true);
         if (ret != need_bytes) {
             bdsc_loge(TAG, "audiotrack write failed! ret=%d", ret);
         }
@@ -89,13 +89,13 @@ void bds_player_service_destroy(bds_player_service_h handle) {
     bdsc_free(handle);
 }
 
-int bds_ps_put_audio(bds_player_service_h handle, bds_audio_bag_t* audio) {
+int bds_ps_put_audio(bds_player_service_h handle, uint8_t* audio, int len) {
     if (!handle || !audio) {
         bdsc_loge(TAG, "invalid params! h=%p, a=%p", handle, audio);
         return -1;
     }
     bds_player_service_t* h          = handle;
-    int                   need_bytes = sizeof(bds_audio_bag_t);
+    int                   need_bytes = len;
     int                   ret        = bds_ringbuffer_put_timeout(h->audio_rb, audio, need_bytes, portMAX_DELAY);
     if (ret != 0) {
         bdsc_loge(TAG, "player service put failed! ret=%d", ret);
@@ -103,10 +103,10 @@ int bds_ps_put_audio(bds_player_service_h handle, bds_audio_bag_t* audio) {
     return ret;
 }
 
-int bds_ps_passthrough_audio(bds_player_service_h handle, bds_audio_bag_t* audio) {
+int bds_ps_passthrough_audio(bds_player_service_h handle, uint8_t* audio, int len) {
     bds_player_service_t* h          = handle;
-    int                   need_bytes = sizeof(audio->audio);
-    int                   ret        = RTAudioTrack_Write(h->audio_track, audio->audio, need_bytes, true);
+    int                   need_bytes = len;
+    int                   ret        = RTAudioTrack_Write(h->audio_track, audio, need_bytes, true);
     if (ret != need_bytes) {
         bdsc_loge(TAG, "audiotrack write failed! ret=%d", ret);
     }

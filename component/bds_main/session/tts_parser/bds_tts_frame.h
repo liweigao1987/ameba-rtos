@@ -8,10 +8,9 @@
 #ifndef LIGHT_BDSPEECH_SDK_COMPONENTS_BDS_LIGHT_SDK_TTS_PARSER_BDS_TTS_FRAME_H_
 #define LIGHT_BDSPEECH_SDK_COMPONENTS_BDS_LIGHT_SDK_TTS_PARSER_BDS_TTS_FRAME_H_
 
-#include <endian.h>
-
 #include "bds_client_memory.h"
 #include "bds_client_log.h"
+#include "bds_endian.h"
 
 #define TAG                             "tts frame"
 

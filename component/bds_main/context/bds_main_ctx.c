@@ -80,8 +80,14 @@ static void wp_trigger_run(bds_main_ctx_t* h, bdsc_event_wakeup_t* event) {
     param.create_tick         = bdsc_get_tick_count();
     bds_sm_create_session(h->session_manager, &param);
     /* bds_player_wp_play(h->player); */
-    bds_session_id_t* id = bds_sm_active_session_id(h->session_manager);
-    bds_speech_start_asr(h->speech, 0, id->sn);
+    bds_session_id_t id  = {0};
+    int              ret = bds_sm_active_session_id(h->session_manager, &id);
+    if (ret != 0) {
+        bdsc_loge(TAG, "no id! ret=%d", ret);
+        // todo: need free session create
+        return;
+    }
+    bds_speech_start_asr(h->speech, 0, &id);
 }
 
 void bds_mc_submit_wp(bds_main_ctx_h handle, bdsc_event_wakeup_t* event) {
@@ -110,4 +116,14 @@ static void wifi_connected_run(bds_main_ctx_t* h, void* param) {
 void bds_mc_submit_wifi_connected(bds_main_ctx_h handle) {
     bds_main_ctx_t* h = handle;
     bdsc_executor_submit2_easy(h->executor, wifi_connected_run, h, NULL, NULL);
+}
+
+static void online_play_run(bds_main_ctx_t* h, bds_session_id_t* id) {
+    bds_player_online_play(h->player, id);
+}
+
+void bds_mc_submit_online_play(bds_main_ctx_h handle, bdsc_event_process_t* event) {
+    bds_main_ctx_t*   h     = handle;
+    bds_session_id_t* param = bds_session_id_create(event->sn);
+    bdsc_executor_submit2_easy(h->executor, online_play_run, h, param, bds_session_id_destroy);
 }

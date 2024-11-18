@@ -13,12 +13,14 @@ vpath %.c $(shell find -L $(CSRC_DIR) -type d)
 MODULE_IFLAGS += -I$(CSRC_DIR)/
 MODULE_IFLAGS += -I$(CSRC_DIR)/audio/
 MODULE_IFLAGS += -I$(CSRC_DIR)/bdvs/
+MODULE_IFLAGS += -I$(CSRC_DIR)/codec/opus/
 MODULE_IFLAGS += -I$(CSRC_DIR)/context/
 MODULE_IFLAGS += -I$(CSRC_DIR)/file/
 MODULE_IFLAGS += -I$(CSRC_DIR)/net/
 MODULE_IFLAGS += -I$(CSRC_DIR)/player/
 MODULE_IFLAGS += -I$(CSRC_DIR)/rpc/
 MODULE_IFLAGS += -I$(CSRC_DIR)/session/
+MODULE_IFLAGS += -I$(CSRC_DIR)/session/tts_parser/
 MODULE_IFLAGS += -I$(CSRC_DIR)/speech/
 MODULE_IFLAGS += -I$(CSRC_DIR)/tool/
 MODULE_IFLAGS += -I$(FREERTOSDIR)/include/
@@ -49,12 +51,14 @@ TARGET_LIB = lib_bds_main
 CSRC +=	\
 	$(wildcard $(CSRC_DIR)/*.c) \
 	$(wildcard $(CSRC_DIR)/bdvs/*.c) \
+	$(wildcard $(CSRC_DIR)/codec/opus/*.c) \
 	$(wildcard $(CSRC_DIR)/context/*.c) \
 	$(wildcard $(CSRC_DIR)/file/*.c) \
 	$(wildcard $(CSRC_DIR)/net/*.c) \
 	$(wildcard $(CSRC_DIR)/player/*.c) \
 	$(wildcard $(CSRC_DIR)/rpc/*.c) \
 	$(wildcard $(CSRC_DIR)/session/*.c) \
+	$(wildcard $(CSRC_DIR)/session/tts_parser/*.c) \
 	$(wildcard $(CSRC_DIR)/speech/*.c) \
 	$(wildcard $(CSRC_DIR)/tool/*.c) \
 
