@@ -21,8 +21,8 @@ typedef struct {
 } bds_session_t;
 
 static void on_tts_frame(bds_tts_frame_t* frame, bds_session_t* h) {
-    int header_len = tts_frame_get_header_length(frame);
-    char* temp = bdsc_malloc(header_len + 1);
+    int   header_len = tts_frame_get_header_length(frame);
+    char* temp       = bdsc_malloc(header_len + 1);
     memcpy(temp, frame->header, header_len);
     bdsc_logw(TAG, "tts_header=%s", temp);
     bdsc_free(temp);
@@ -60,6 +60,15 @@ void bds_session_destroy(bds_session_h handle) {
         h->tts_listener = NULL;
     }
     if (h->tts_q) {
+        bds_tts_frame_t* frame = NULL;
+        while (1) {
+            BaseType_t ret = bds_queue_pop(h->tts_q, &frame);
+            if (ret != pdPASS) {
+                bdsc_logw(TAG, "clean tts_q");
+                break;
+            }
+            bds_tts_frame_destroy(frame);
+        }
         bds_queue_delete(h->tts_q);
         h->tts_q = NULL;
     }

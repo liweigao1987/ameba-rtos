@@ -43,13 +43,17 @@ void bds_session_manager_destroy(bds_session_manager_h handle) {
     bdsc_free(handle);
 }
 
+static void clone_session_id(bds_session_id_t* id, bds_session_h session) {
+    bds_session_id_clone(id, bds_session_get_id(session));
+}
+
 int bds_sm_active_session_id(bds_session_manager_h handle, bds_session_id_t* id) {
     bds_session_manager_t* h = handle;
     if (!h->active_session) {
         bdsc_logw(TAG, "no active session!");
         return -10;
     }
-    bds_session_id_clone(id, bds_session_get_id(h->active_session));
+    clone_session_id(id, h->active_session);
     return 0;
 }
 
@@ -88,13 +92,19 @@ int bds_sm_create_session(bds_session_manager_h handle, bds_session_param_t* par
     bds_session_manager_t* h  = handle;
     bds_session_id_t       id = {0};
     bds_generate_uuid(id.sn);
-    bdsc_logw(TAG, "session sn=%s", id.sn);
-    bds_session_h session = bds_session_create(param, &id);
-    ListItem_t*   item    = bdsc_malloc(sizeof(ListItem_t));
+    bdsc_logw(TAG, "new_session sn=%s", id.sn);
+    bds_session_h new_session = bds_session_create(param, &id);
+    ListItem_t*   item        = bdsc_malloc(sizeof(ListItem_t));
     vListInitialiseItem(item);
-    listSET_LIST_ITEM_OWNER(item, session);
+    listSET_LIST_ITEM_OWNER(item, new_session);
     vListInsertEnd(h->list, item);
-    h->active_session = session;
+    bds_session_h old_session = h->active_session;
+    h->active_session         = new_session;
+    if (old_session) {
+        bds_session_id_t old_id = {0};
+        clone_session_id(&old_id, old_session);
+        bds_sm_destroy_session(h, &old_id);
+    }
     return 0;
 }
 
