@@ -127,7 +127,6 @@ int bds_player_direct_play(bds_player_h handle, char* code) {
 }
 
 static void decode_tts(bds_player_t* h, bds_tts_frame_t* frame) {
-    bdsc_logw(TAG, "--->%p", frame);
     int header_format = char_to_int(frame->audio);
     bdsc_logw(TAG, "header_format=%08x", header_format);
     int     opus_bag_bytes = tts_frame_get_audio_length(frame) - 4;
@@ -141,7 +140,6 @@ static void decode_tts(bds_player_t* h, bds_tts_frame_t* frame) {
         if (dec_len != PCM_20MS_BYTES) {
             bdsc_loge(TAG, "dec error! %d:%d", dec_len, PCM_20MS_BYTES);
         }
-        bdsc_logw(TAG, "dec_len=%d", dec_len);
         bds_ps_put_audio(h->pservice, bag, dec_len);
         bag_addr += OPUS_TTS_BAG;
     }
