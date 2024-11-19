@@ -21,6 +21,12 @@ typedef struct {
 } bds_session_t;
 
 static void on_tts_frame(bds_tts_frame_t* frame, bds_session_t* h) {
+    bdsc_logw(TAG, "frame_audio=%p", frame->audio);
+    int header_len = tts_frame_get_header_length(frame);
+    char* temp = bdsc_malloc(header_len + 1);
+    memcpy(temp, frame->header, header_len);
+    bdsc_logw(TAG, "header=%s", temp);
+    bdsc_free(temp);
     BaseType_t ret = bds_queue_push(h->tts_q, &frame);
     if (ret != pdPASS) {
         bdsc_loge(TAG, "tts q push failed!");

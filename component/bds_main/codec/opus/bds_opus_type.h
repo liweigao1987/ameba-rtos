@@ -15,7 +15,7 @@ extern "C" {
 #define DEC_CHANNEL     1
 #define PCM_20MS_SAMPLE 320
 #define PCM_20MS_BYTES  (PCM_20MS_SAMPLE * 2)
-#define OPUS_20MS_BYTES 160
+#define OPUS_20MS_BYTES 40
 #define OPUS_TTS_BAG    (8 + OPUS_20MS_BYTES)
 
 #ifdef __cplusplus

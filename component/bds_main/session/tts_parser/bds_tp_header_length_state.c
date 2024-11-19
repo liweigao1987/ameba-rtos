@@ -23,6 +23,7 @@ static void decode(bds_tts_parser_t *machine, bdsc_event_data_t *data, int offse
     }
     if (machine->frame == NULL) {
         machine->frame = bds_tts_frame_create();
+        bdsc_logw(TAG, "frame=%p", machine->frame);
     }
     int header_length_lack = tts_frame_header_length_lack(machine->frame);
     if (header_length_lack > 0) {
