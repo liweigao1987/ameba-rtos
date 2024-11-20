@@ -105,7 +105,7 @@ int bds_session_take_online_audio(bds_session_h handle, bds_tts_frame_t** data) 
 int bds_session_start_asr(bds_session_h handle) {
     bds_session_t* h      = handle;
     bds_speech_h   speech = bds_mc_get_speech(h->ctx);
-    bds_speech_start_asr(speech, 0, &h->id);
+    bds_speech_start_asr(speech, 1, &h->id);
     return 0;
 }
 
@@ -115,5 +115,12 @@ int bds_session_direct_trigger(bds_session_h handle, bdsc_event_direct_t* event)
     bds_speech_cancel_asr(speech);
     bds_player_h player = bds_mc_get_player(h->ctx);
     bds_player_direct_play(player, event->keywords);
+    return 0;
+}
+
+int bds_session_online_play(bds_session_h handle) {
+    bds_session_t* h      = handle;
+    bds_player_h   player = bds_mc_get_player(h->ctx);
+    bds_player_online_play(player, &h->id);
     return 0;
 }

@@ -101,15 +101,8 @@ static void wp_trigger_run(bds_main_ctx_t* h, bdsc_event_wakeup_t* event) {
     param.create_tick         = bdsc_get_tick_count();
     bds_sm_create_session(h->session_manager, &param);
     bds_player_wp_play(h->player);
-    bds_session_id_t id  = {0};
-    int              ret = bds_sm_active_session_id(h->session_manager, &id);
-    if (ret != 0) {
-        bdsc_loge(TAG, "no id! ret=%d", ret);
-        // todo: need free session create
-        return;
-    }
-    ret = bds_sm_start_asr(h->session_manager, &id);
-    bdsc_logw(TAG, "wp_trigger ret=%d", ret);
+    int ret = bds_sm_active_start_asr(h->session_manager);
+    bdsc_logd(TAG, "ret=%d", ret);
 }
 
 void bds_mc_submit_wp(bds_main_ctx_h handle, bdsc_event_wakeup_t* event) {
@@ -119,24 +112,11 @@ void bds_mc_submit_wp(bds_main_ctx_h handle, bdsc_event_wakeup_t* event) {
     bdsc_executor_submit2_easy(h->executor, wp_trigger_run, h, param, bdsc_free);
 }
 
-static void direct_trigger_run(bds_main_ctx_t* h, bdsc_event_direct_t* event) {
-    bdsc_logw(TAG, "executor direct=%s", event->keywords);
-    bds_session_id_t id  = {0};
-    int              ret = bds_sm_active_session_id(h->session_manager, &id);
-    if (ret != 0) {
-        bdsc_loge(TAG, "no id! ret=%d", ret);
-        // todo: need free session create
-        return;
-    }
-    ret = bds_sm_direct_trigger(h->session_manager, &id, event);
-    bdsc_logw(TAG, "direct_trigger ret=%d", ret);
-}
-
 void bds_mc_submit_direct(bds_main_ctx_h handle, bdsc_event_direct_t* event) {
     bds_main_ctx_t*      h     = handle;
     bdsc_event_direct_t* param = bdsc_malloc(sizeof(bdsc_event_direct_t));
     memcpy(param, event, sizeof(bdsc_event_direct_t));
-    bdsc_executor_submit2_easy(h->executor, direct_trigger_run, h, param, bdsc_free);
+    bdsc_executor_submit2_easy(h->executor, bds_sm_active_direct_trigger, h->session_manager, param, bdsc_free);
 }
 
 static void wifi_connected_run(bds_main_ctx_t* h, void* param) {
@@ -148,12 +128,8 @@ void bds_mc_submit_wifi_connected(bds_main_ctx_h handle) {
     bdsc_executor_submit2_easy(h->executor, wifi_connected_run, h, NULL, NULL);
 }
 
-static void online_play_run(bds_main_ctx_t* h, bds_session_id_t* id) {
-    bds_player_online_play(h->player, id);
-}
-
 void bds_mc_submit_online_play(bds_main_ctx_h handle, bdsc_event_process_t* event) {
     bds_main_ctx_t*   h     = handle;
     bds_session_id_t* param = bds_session_id_create(event->sn);
-    bdsc_executor_submit2_easy(h->executor, online_play_run, h, param, bds_session_id_destroy);
+    bdsc_executor_submit2_easy(h->executor, bds_sm_online_play, h->session_manager, param, bds_session_id_destroy);
 }

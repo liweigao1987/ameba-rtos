@@ -45,7 +45,7 @@ void bds_file_destroy(bds_file_h handle) {
 
 static void get_lfs_path(bds_file_t* h, char* dst, int dst_len, char* src) {
     DiagSnPrintf(dst, dst_len, "%s:%s", h->lfs_prefix, src);
-    bdsc_logw(TAG, "src=%s, dst=%s", src, dst);
+    /* bdsc_logw(TAG, "src=%s, dst=%s", src, dst); */
 }
 
 int bds_file_load_cfg(bds_file_h handle) {

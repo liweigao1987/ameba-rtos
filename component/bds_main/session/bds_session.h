@@ -8,9 +8,9 @@
 #define _BDS_SESSION_H_
 
 #include "bds_client_event.h"
+#include "bds_main_ctx.h"
 #include "bds_session_type.h"
 #include "bds_tts_frame.h"
-#include "bds_main_ctx.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -31,6 +31,8 @@ int bds_session_take_online_audio(bds_session_h handle, bds_tts_frame_t** data);
 int bds_session_start_asr(bds_session_h handle);
 
 int bds_session_direct_trigger(bds_session_h handle, bdsc_event_direct_t* event);
+
+int bds_session_online_play(bds_session_h handle);
 
 #ifdef __cplusplus
 }

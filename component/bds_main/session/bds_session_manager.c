@@ -70,6 +70,50 @@ int bds_sm_active_session_id(bds_session_manager_h handle, bds_session_id_t* id)
     return 0;
 }
 
+bds_session_id_t* bds_session_id_create(char* sn) {
+    bds_session_id_t* id = bdsc_malloc(sizeof(bds_session_id_t));
+    memcpy(id->sn, sn, SN_LENGTH);
+    return id;
+}
+
+bds_session_id_t* bds_session_id_create2(bds_session_id_t* id) {
+    bds_session_id_t* dst = bdsc_malloc(sizeof(bds_session_id_t));
+    memcpy(dst, id, sizeof(bds_session_id_t));
+    return dst;
+}
+
+void bds_session_id_destroy(bds_session_id_t* id) {
+    bdsc_free(id);
+}
+
+bool bds_session_is_same(bds_session_id_t* id1, bds_session_id_t* id2) {
+    if (!id1 || !id2) {
+        bdsc_loge(TAG, "invalid params! id1=%p, id2=%p", id1, id2);
+        return false;
+    }
+    if (strcmp(id1->sn, id2->sn) == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+void bds_session_id_clone(bds_session_id_t* dst, bds_session_id_t* src) {
+    if (!dst || !src) {
+        bdsc_loge(TAG, "invalid params! d=%p, s=%p", dst, src);
+        return;
+    }
+    memcpy(dst, src, sizeof(bds_session_id_t));
+}
+
+void bds_session_id_build(bds_session_id_t* dst, char* sn) {
+    if (!dst || !sn) {
+        bdsc_loge(TAG, "invalid params! d=%p, s=%p", dst, sn);
+        return;
+    }
+    memcpy(dst->sn, sn, SN_LENGTH);
+}
+
 static bds_session_h get_session(bds_session_manager_t* h, bds_session_id_t* id) {
     bds_session_h session = NULL;
     if (listLIST_IS_EMPTY(h->list)) {
@@ -210,46 +254,42 @@ int bds_sm_direct_trigger(bds_session_manager_h handle, bds_session_id_t* id, bd
     return ret;
 }
 
-bds_session_id_t* bds_session_id_create(char* sn) {
-    bds_session_id_t* id = bdsc_malloc(sizeof(bds_session_id_t));
-    memcpy(id->sn, sn, SN_LENGTH);
-    return id;
-}
-
-bds_session_id_t* bds_session_id_create2(bds_session_id_t* id) {
-    bds_session_id_t* dst = bdsc_malloc(sizeof(bds_session_id_t));
-    memcpy(dst, id, sizeof(bds_session_id_t));
-    return dst;
-}
-
-void bds_session_id_destroy(bds_session_id_t* id) {
-    bdsc_free(id);
-}
-
-bool bds_session_is_same(bds_session_id_t* id1, bds_session_id_t* id2) {
-    if (!id1 || !id2) {
-        bdsc_loge(TAG, "invalid params! id1=%p, id2=%p", id1, id2);
-        return false;
+int bds_sm_online_play(bds_session_manager_h handle, bds_session_id_t* id) {
+    bds_session_manager_t* h = handle;
+    bdsc_mutex_lock(h->lock);
+    bds_session_h session = get_session(h, id);
+    if (!session) {
+        bdsc_loge(TAG, "no session! sn=%s", id->sn);
+        bdsc_mutex_unlock(h->lock);
+        return -10;
     }
-    if (strcmp(id1->sn, id2->sn) == 0) {
-        return true;
-    } else {
-        return false;
-    }
+    int ret = bds_session_online_play(session);
+    bdsc_mutex_unlock(h->lock);
+    return ret;
 }
 
-void bds_session_id_clone(bds_session_id_t* dst, bds_session_id_t* src) {
-    if (!dst || !src) {
-        bdsc_loge(TAG, "invalid params! d=%p, s=%p", dst, src);
-        return;
+int bds_sm_active_start_asr(bds_session_manager_h handle) {
+    bds_session_manager_t* h = handle;
+    bdsc_mutex_lock(h->lock);
+    if (!h->active_session) {
+        bdsc_loge(TAG, "no active session!");
+        bdsc_mutex_unlock(h->lock);
+        return -10;
     }
-    memcpy(dst, src, sizeof(bds_session_id_t));
+    int ret = bds_session_start_asr(h->active_session);
+    bdsc_mutex_unlock(h->lock);
+    return ret;
 }
 
-void bds_session_id_build(bds_session_id_t* dst, char* sn) {
-    if (!dst || !sn) {
-        bdsc_loge(TAG, "invalid params! d=%p, s=%p", dst, sn);
-        return;
+int bds_sm_active_direct_trigger(bds_session_manager_h handle, bdsc_event_direct_t* event) {
+    bds_session_manager_t* h = handle;
+    bdsc_mutex_lock(h->lock);
+    if (!h->active_session) {
+        bdsc_loge(TAG, "no active session!");
+        bdsc_mutex_unlock(h->lock);
+        return -10;
     }
-    memcpy(dst->sn, sn, SN_LENGTH);
+    int ret = bds_session_direct_trigger(h->active_session, event);
+    bdsc_mutex_unlock(h->lock);
+    return ret;
 }
