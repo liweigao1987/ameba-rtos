@@ -100,7 +100,7 @@ FlashLayoutInfo_TypeDef Flash_Layout[] = {
 	{IMG_APP_OTA2, 0x08214000, 0x083DCFFF}, //Certificate(4K) + Manifest(4K) + KR4 & KM4 Application OTA2 + Manifest(4K) + RDP IMG OTA2
 	{FTL,			0x083DD000, 0x083DFFFF}, //FTL for BT(>=12K), The start offset of flash pages which is allocated to FTL physical map.
 	{IMG_DSP,		0x083E0000, 0x089DFFFF}, //Manifest(4K) + DSP IMG, only one DSP region in layout (6M)
-	{VFS1, 			0x089E0000, 0x08BDFFFF}, //VFS region 1 (2M)
+	{VFS1, 			0x089E0000, 0x08DDFFFF}, //VFS region 1 (4M)
 	{VFS2, 			0xFFFFFFFF, 0xFFFFFFFF}, //VFS region 2
 	{USER, 			0xFFFFFFFF, 0xFFFFFFFF}, //reserve for user
 
