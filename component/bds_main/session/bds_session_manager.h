@@ -17,7 +17,7 @@ extern "C" {
 
 typedef void* bds_session_manager_h;
 
-bds_session_manager_h bds_session_manager_create();
+bds_session_manager_h bds_session_manager_create(void* ctx);
 
 void bds_session_manager_destroy(bds_session_manager_h handle);
 
@@ -30,6 +30,10 @@ void bds_sm_destroy_session(bds_session_manager_h handle, bds_session_id_t* id);
 void bds_sm_put_online_audio(bds_session_manager_h handle, bdsc_event_data_t* data);
 
 int bds_sm_take_online_audio(bds_session_manager_h handle, bds_session_id_t* id, bds_tts_frame_t** data);
+
+int bds_sm_start_asr(bds_session_manager_h handle, bds_session_id_t* id);
+
+int bds_sm_direct_trigger(bds_session_manager_h handle, bds_session_id_t* id, bdsc_event_direct_t* event);
 
 bds_session_id_t* bds_session_id_create(char* sn);
 

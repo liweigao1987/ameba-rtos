@@ -7,7 +7,7 @@
 #ifndef _BDS_SPEECH_H_
 #define _BDS_SPEECH_H_
 
-#include "bds_main_ctx.h"
+#include "bds_session_type.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -15,7 +15,7 @@ extern "C" {
 
 typedef void* bds_speech_h;
 
-bds_speech_h bds_speech_create(bds_main_ctx_h ctx);
+bds_speech_h bds_speech_create(void* ctx);
 
 void bds_speech_destroy(bds_speech_h handle);
 

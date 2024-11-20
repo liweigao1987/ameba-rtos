@@ -9,6 +9,7 @@
 #include "rtw_wifi_defs.h"
 #include "wifi_conf.h"
 #include "bds_macro.h"
+#include "bds_main_ctx.h"
 
 #define TAG "net_manager"
 

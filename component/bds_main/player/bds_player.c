@@ -12,6 +12,7 @@
 #include "bds_player_service.h"
 #include "bds_player_type.h"
 #include "bdsc_executor.h"
+#include "bds_main_ctx.h"
 
 #define TAG "player"
 

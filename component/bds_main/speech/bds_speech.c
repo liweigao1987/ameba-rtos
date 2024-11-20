@@ -11,6 +11,7 @@
 #include "bds_common_utility.h"
 #include "bds_device.h"
 #include "bds_speech_type.h"
+#include "bds_main_ctx.h"
 
 #define TAG "speech"
 

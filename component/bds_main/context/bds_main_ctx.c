@@ -5,9 +5,6 @@
 #include "bds_client_log.h"
 #include "bds_client_memory.h"
 #include "bds_macro.h"
-#include "bds_net_manager.h"
-#include "bds_player.h"
-#include "bds_speech.h"
 #include "bdsc_executor.h"
 
 #define TAG "ctx"
@@ -34,7 +31,7 @@ bds_main_ctx_h bds_main_ctx_create() {
     bds_player_load_cfg(h->player);
     h->net_manager = bds_net_manager_create(h);
     bds_nm_check_wifi_status(h->net_manager);
-    h->session_manager = bds_session_manager_create();
+    h->session_manager = bds_session_manager_create(h);
     return h;
 }
 
@@ -74,6 +71,30 @@ bds_session_manager_h bds_mc_get_session_manager(bds_main_ctx_h handle) {
     return h->session_manager;
 }
 
+bds_net_manager_h bds_mc_get_net_manager(bds_main_ctx_h handle) {
+    if (!handle) {
+        return NULL;
+    }
+    bds_main_ctx_t* h = handle;
+    return h->net_manager;
+}
+
+bds_player_h bds_mc_get_player(bds_main_ctx_h handle) {
+    if (!handle) {
+        return NULL;
+    }
+    bds_main_ctx_t* h = handle;
+    return h->player;
+}
+
+bds_speech_h bds_mc_get_speech(bds_main_ctx_h handle) {
+    if (!handle) {
+        return NULL;
+    }
+    bds_main_ctx_t* h = handle;
+    return h->speech;
+}
+
 static void wp_trigger_run(bds_main_ctx_t* h, bdsc_event_wakeup_t* event) {
     bdsc_logw(TAG, "executor wp");
     bds_session_param_t param = {0};
@@ -87,7 +108,8 @@ static void wp_trigger_run(bds_main_ctx_t* h, bdsc_event_wakeup_t* event) {
         // todo: need free session create
         return;
     }
-    bds_speech_start_asr(h->speech, 0, &id);
+    ret = bds_sm_start_asr(h->session_manager, &id);
+    bdsc_logw(TAG, "wp_trigger ret=%d", ret);
 }
 
 void bds_mc_submit_wp(bds_main_ctx_h handle, bdsc_event_wakeup_t* event) {
@@ -99,7 +121,15 @@ void bds_mc_submit_wp(bds_main_ctx_h handle, bdsc_event_wakeup_t* event) {
 
 static void direct_trigger_run(bds_main_ctx_t* h, bdsc_event_direct_t* event) {
     bdsc_logw(TAG, "executor direct=%s", event->keywords);
-    bds_player_direct_play(h->player, event->keywords);
+    bds_session_id_t id  = {0};
+    int              ret = bds_sm_active_session_id(h->session_manager, &id);
+    if (ret != 0) {
+        bdsc_loge(TAG, "no id! ret=%d", ret);
+        // todo: need free session create
+        return;
+    }
+    ret = bds_sm_direct_trigger(h->session_manager, &id, event);
+    bdsc_logw(TAG, "direct_trigger ret=%d", ret);
 }
 
 void bds_mc_submit_direct(bds_main_ctx_h handle, bdsc_event_direct_t* event) {

@@ -7,7 +7,6 @@
 #ifndef _BDS_PLAYER_H_
 #define _BDS_PLAYER_H_
 
-#include "bds_main_ctx.h"
 #include "bds_session_type.h"
 
 #ifdef __cplusplus
@@ -16,7 +15,7 @@ extern "C" {
 
 typedef void* bds_player_h;
 
-bds_player_h bds_player_create(bds_main_ctx_h ctx);
+bds_player_h bds_player_create(void* ctx);
 
 void bds_player_destroy(bds_player_h handle);
 

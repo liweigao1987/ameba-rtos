@@ -13,6 +13,7 @@
 #define TTS_Q_ENTRY_SIZE sizeof(bds_tts_frame_t*)
 
 typedef struct {
+    bds_main_ctx_h             ctx;
     bds_session_param_t        param;
     bds_session_id_t           id;
     bds_tts_parser_t*          tts_parser;
@@ -33,8 +34,9 @@ static void on_tts_frame(bds_tts_frame_t* frame, bds_session_t* h) {
     }
 }
 
-bds_session_h bds_session_create(bds_session_param_t* param, bds_session_id_t* id) {
+bds_session_h bds_session_create(bds_main_ctx_h ctx, bds_session_param_t* param, bds_session_id_t* id) {
     bds_session_t* h = bdsc_malloc(sizeof(bds_session_t));
+    h->ctx           = ctx;
     memcpy(&h->param, param, sizeof(bds_session_param_t));
     memcpy(&h->id, id, sizeof(bds_session_id_t));
     h->tts_listener           = bdsc_malloc(sizeof(bds_tts_parser_listener_t));
@@ -97,5 +99,21 @@ int bds_session_take_online_audio(bds_session_h handle, bds_tts_frame_t** data) 
         *data = NULL;
         return -20;
     }
+    return 0;
+}
+
+int bds_session_start_asr(bds_session_h handle) {
+    bds_session_t* h      = handle;
+    bds_speech_h   speech = bds_mc_get_speech(h->ctx);
+    bds_speech_start_asr(speech, 0, &h->id);
+    return 0;
+}
+
+int bds_session_direct_trigger(bds_session_h handle, bdsc_event_direct_t* event) {
+    bds_session_t* h      = handle;
+    bds_speech_h   speech = bds_mc_get_speech(h->ctx);
+    bds_speech_cancel_asr(speech);
+    bds_player_h player = bds_mc_get_player(h->ctx);
+    bds_player_direct_play(player, event->keywords);
     return 0;
 }

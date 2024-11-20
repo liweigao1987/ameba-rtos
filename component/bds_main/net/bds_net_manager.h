@@ -7,15 +7,13 @@
 #ifndef _BDS_NET_MANAGER_H_
 #define _BDS_NET_MANAGER_H_
 
-#include "bds_main_ctx.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 typedef void* bds_net_manager_h;
 
-bds_net_manager_h bds_net_manager_create(bds_main_ctx_h ctx);
+bds_net_manager_h bds_net_manager_create(void* ctx);
 
 void bds_net_manager_destroy(bds_net_manager_h handle);
 
