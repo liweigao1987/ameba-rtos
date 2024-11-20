@@ -30,7 +30,7 @@ bds_player_h bds_player_create(bds_main_ctx_h ctx) {
     bdsc_executor_param_t exe_param = {
         .name       = "player_exe",
         .capacity   = 3,
-        .stack_size = 60 * 1024,
+        .stack_size = 20 * 1024,
         .priority   = BDS_THREAD_PRIORITY_HIGH,
     };
     h->executor = bdsc_executor_create(&exe_param);

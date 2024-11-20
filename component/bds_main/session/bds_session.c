@@ -52,7 +52,9 @@ void bds_session_destroy(bds_session_h handle) {
     if (!handle) {
         return;
     }
-    bds_session_t* h = handle;
+    bds_session_t* h      = handle;
+    bds_speech_h   speech = bds_mc_get_speech(h->ctx);
+    bds_speech_cancel_asr(speech);
     if (h->tts_parser) {
         bds_tts_parser_destroy(h->tts_parser);
         h->tts_parser = NULL;
@@ -95,7 +97,7 @@ int bds_session_take_online_audio(bds_session_h handle, bds_tts_frame_t** data) 
     bds_session_t* h   = handle;
     BaseType_t     ret = bds_queue_pop(h->tts_q, data);
     if (ret != pdPASS) {
-        bdsc_loge(TAG, "tts q pop failed!");
+        bdsc_loge(TAG, "tts_q pop failed!");
         *data = NULL;
         return -20;
     }
@@ -105,12 +107,15 @@ int bds_session_take_online_audio(bds_session_h handle, bds_tts_frame_t** data) 
 int bds_session_start_asr(bds_session_h handle) {
     bds_session_t* h      = handle;
     bds_speech_h   speech = bds_mc_get_speech(h->ctx);
-    bds_speech_start_asr(speech, 1, &h->id);
+    bds_speech_start_asr(speech, 0, &h->id);
     return 0;
 }
 
 int bds_session_direct_trigger(bds_session_h handle, bdsc_event_direct_t* event) {
     bds_session_t* h      = handle;
+    if (strcmp(event->keywords, "asr failure") == 0) {
+        return 0;
+    }
     bds_speech_h   speech = bds_mc_get_speech(h->ctx);
     bds_speech_cancel_asr(speech);
     bds_player_h player = bds_mc_get_player(h->ctx);

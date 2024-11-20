@@ -5,6 +5,7 @@
 #include "bds_client_log.h"
 #include "bds_client_memory.h"
 #include "bds_macro.h"
+#include "bds_monitor.h"
 #include "bdsc_executor.h"
 
 #define TAG "ctx"
@@ -15,6 +16,7 @@ typedef struct {
     bds_player_h          player;
     bds_net_manager_h     net_manager;
     bds_session_manager_h session_manager;
+    bds_monitor_h         monitor;
 } bds_main_ctx_t;
 
 bds_main_ctx_h bds_main_ctx_create() {
@@ -32,6 +34,7 @@ bds_main_ctx_h bds_main_ctx_create() {
     h->net_manager = bds_net_manager_create(h);
     bds_nm_check_wifi_status(h->net_manager);
     h->session_manager = bds_session_manager_create(h);
+    h->monitor         = bds_monitor_create();
     return h;
 }
 
@@ -55,6 +58,10 @@ void bds_main_ctx_destroy(bds_main_ctx_h handle) {
     if (h->net_manager) {
         bds_net_manager_destroy(h->net_manager);
         h->net_manager = NULL;
+    }
+    if (h->monitor) {
+        bds_monitor_destroy(h->monitor);
+        h->monitor = NULL;
     }
     if (h->executor) {
         bdsc_executor_destroy(h->executor);

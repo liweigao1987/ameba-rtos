@@ -16,6 +16,7 @@ MODULE_IFLAGS += -I$(CSRC_DIR)/bdvs/
 MODULE_IFLAGS += -I$(CSRC_DIR)/codec/opus/
 MODULE_IFLAGS += -I$(CSRC_DIR)/context/
 MODULE_IFLAGS += -I$(CSRC_DIR)/file/
+MODULE_IFLAGS += -I$(CSRC_DIR)/monitor/
 MODULE_IFLAGS += -I$(CSRC_DIR)/net/
 MODULE_IFLAGS += -I$(CSRC_DIR)/player/
 MODULE_IFLAGS += -I$(CSRC_DIR)/rpc/
@@ -54,6 +55,7 @@ CSRC +=	\
 	$(wildcard $(CSRC_DIR)/codec/opus/*.c) \
 	$(wildcard $(CSRC_DIR)/context/*.c) \
 	$(wildcard $(CSRC_DIR)/file/*.c) \
+	$(wildcard $(CSRC_DIR)/monitor/*.c) \
 	$(wildcard $(CSRC_DIR)/net/*.c) \
 	$(wildcard $(CSRC_DIR)/player/*.c) \
 	$(wildcard $(CSRC_DIR)/rpc/*.c) \

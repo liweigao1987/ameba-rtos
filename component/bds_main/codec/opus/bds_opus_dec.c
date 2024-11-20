@@ -55,7 +55,7 @@ int bds_opus_dec_proc(bds_opus_dec_h handle, uint8_t* dst, int* dst_len, uint8_t
     bds_opus_dec_t* h      = handle;
     int             length = char_to_int(src);
     int             range  = char_to_int(src + 4);
-    bdsc_logd(TAG, "len=%d, src=%p", length, src);
+    /* bdsc_logd(TAG, "len=%d, src=%p", length, src); */
     int sample_ret = opus_multistream_decode(h->decoder, src + 8, length, dst, PCM_20MS_SAMPLE, 0);
     if (sample_ret != PCM_20MS_SAMPLE) {
         bdsc_logd(TAG, "decode failed! ret=%d", sample_ret);

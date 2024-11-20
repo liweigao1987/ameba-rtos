@@ -73,7 +73,7 @@ static void ps_run(bds_player_service_t* h) {
 bds_player_service_h bds_player_service_create() {
     bds_player_service_t* h = bdsc_malloc(sizeof(bds_player_service_t));
     h->audio_rb             = bds_ringbuffer_create(AUDIO_RB_SIZE);
-    h->ps_task              = bds_task_create(ps_run, "bds_ps", 10 * 1024, h, BDS_THREAD_PRIORITY_HIGH);
+    h->ps_task              = bds_task_create(ps_run, "bds_playerS", 10 * 1024, h, BDS_THREAD_PRIORITY_HIGH);
     return h;
 }
 
