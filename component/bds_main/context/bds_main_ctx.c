@@ -104,12 +104,7 @@ bds_speech_h bds_mc_get_speech(bds_main_ctx_h handle) {
 
 static void wp_trigger_run(bds_main_ctx_t* h, bdsc_event_wakeup_t* event) {
     bdsc_logw(TAG, "executor wp");
-    bds_session_param_t param = {0};
-    param.create_tick         = bdsc_get_tick_count();
-    bds_sm_create_session(h->session_manager, &param);
     bds_player_wp_play(h->player);
-    int ret = bds_sm_active_start_asr(h->session_manager);
-    bdsc_logd(TAG, "ret=%d", ret);
 }
 
 void bds_mc_submit_wp(bds_main_ctx_h handle, bdsc_event_wakeup_t* event) {
@@ -127,7 +122,7 @@ void bds_mc_submit_direct(bds_main_ctx_h handle, bdsc_event_direct_t* event) {
 }
 
 static void wifi_connected_run(bds_main_ctx_t* h, void* param) {
-    bds_speech_start_link(h->speech);
+    /* bds_speech_start_link(h->speech); */
 }
 
 void bds_mc_submit_wifi_connected(bds_main_ctx_h handle) {
@@ -139,4 +134,9 @@ void bds_mc_submit_online_play(bds_main_ctx_h handle, bdsc_event_process_t* even
     bds_main_ctx_t*   h     = handle;
     bds_session_id_t* param = bds_session_id_create(event->sn);
     bdsc_executor_submit2_easy(h->executor, bds_sm_online_play, h->session_manager, param, bds_session_id_destroy);
+}
+
+void bds_mc_play_saopin(bds_main_ctx_h handle) {
+    bds_main_ctx_t* h = handle;
+    bds_player_wp_play(h->player);
 }

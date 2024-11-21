@@ -13,7 +13,7 @@
 extern "C" {
 #endif
 
-#define AUDIO_SR      16000
+#define AUDIO_SR      48000
 #define AUDIO_FORMAT  RTAUDIO_FORMAT_PCM_16_BIT
 #define AUDIO_CH      1
 

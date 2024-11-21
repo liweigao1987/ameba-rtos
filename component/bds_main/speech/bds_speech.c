@@ -124,7 +124,7 @@ static int32_t event_callback(bds_client_event_t* event, bds_speech_t* h) {
                     bdsc_loge(TAG, "direct null!");
                     break;
                 }
-                bds_mc_submit_direct(h->ctx, direct);
+                /* bds_mc_submit_direct(h->ctx, direct); */
                 break;
             }
             case EVENT_LINK_CONNECTED: {

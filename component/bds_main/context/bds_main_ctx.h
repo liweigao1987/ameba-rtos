@@ -39,6 +39,8 @@ void bds_mc_submit_wifi_connected(bds_main_ctx_h handle);
 
 void bds_mc_submit_online_play(bds_main_ctx_h handle, bdsc_event_process_t* event);
 
+void bds_mc_play_saopin(bds_main_ctx_h handle);
+
 #ifdef __cplusplus
 }
 #endif
