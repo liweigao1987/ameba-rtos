@@ -41,6 +41,8 @@ static void init_audio_track(bds_player_service_t* h) {
     /* uint32_t track_start_threshold = RTAudioTrack_GetStartThresholdBytes(h->audio_track); */
     /* bdsc_logw(TAG, "start threshold=%u", track_start_threshold); */
 }
+
+static int  take_count = 0;
 static void ps_run(bds_player_service_t* h) {
     bdsc_logw(TAG, "ps_run +");
     init_audio_track(h);
@@ -54,6 +56,8 @@ static void ps_run(bds_player_service_t* h) {
     int     need_bytes = sizeof(audio);
     while (1) {
         ret = bds_ringbuffer_take(h->audio_rb, audio, need_bytes);
+        take_count++;
+        /* bdsc_logd(TAG, "players_take c=%d, ret=%d", take_count, ret); */
         if (ret != need_bytes) {
             bdsc_loge(TAG, "take audiorb failed! %d!=%d", ret, need_bytes);
         }
@@ -89,7 +93,8 @@ void bds_player_service_destroy(bds_player_service_h handle) {
     bdsc_free(handle);
 }
 
-int bds_ps_put_audio(bds_player_service_h handle, uint8_t* audio, int len) {
+static int put_count = 0;
+int        bds_ps_put_audio(bds_player_service_h handle, uint8_t* audio, int len) {
     if (!handle || !audio) {
         bdsc_loge(TAG, "invalid params! h=%p, a=%p", handle, audio);
         return -1;
@@ -97,9 +102,11 @@ int bds_ps_put_audio(bds_player_service_h handle, uint8_t* audio, int len) {
     bds_player_service_t* h          = handle;
     int                   need_bytes = len;
     int                   ret        = bds_ringbuffer_put_timeout(h->audio_rb, audio, need_bytes, portMAX_DELAY);
+    put_count++;
     if (ret != 0) {
         bdsc_loge(TAG, "player service put failed! ret=%d", ret);
     }
+    /* bdsc_logd(TAG, "players_put c=%d,b=%d, ret=%d", put_count, need_bytes, ret); */
     return ret;
 }
 

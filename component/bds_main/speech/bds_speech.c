@@ -10,8 +10,8 @@
 #include "bds_client_params.h"
 #include "bds_common_utility.h"
 #include "bds_device.h"
-#include "bds_speech_type.h"
 #include "bds_main_ctx.h"
+#include "bds_speech_type.h"
 
 #define TAG "speech"
 
@@ -29,22 +29,27 @@ static int32_t event_callback(bds_client_event_t* event, bds_speech_t* h) {
                 break;
             }
             case EVENT_ASR_ERROR: {
+                bdsc_logi(TAG, "asr_error");
                 bdsc_event_error_t* error = (bdsc_event_error_t*)event->content;
                 break;
             }
             case EVENT_ASR_CANCEL: {
+                bdsc_logi(TAG, "asr_cancel");
                 bdsc_event_process_t* process = (bdsc_event_process_t*)event->content;
                 break;
             }
             case EVENT_ASR_BEGIN: {
+                bdsc_logi(TAG, "asr_begin");
                 bdsc_event_process_t* process = (bdsc_event_process_t*)event->content;
                 break;
             }
             case EVENT_ASR_RESULT: {
+                bdsc_logi(TAG, "asr_result");
                 bdsc_event_data_t* asr_result = (bdsc_event_data_t*)event->content;
                 break;
             }
             case EVENT_ASR_EXTERN_DATA: {
+                bdsc_logi(TAG, "asr_extern");
                 bdsc_event_data_t* extern_result = (bdsc_event_data_t*)event->content;
                 int                len           = extern_result->buffer_length - 12;
                 char*              str           = bdsc_malloc(len + 1);
@@ -54,6 +59,7 @@ static int32_t event_callback(bds_client_event_t* event, bds_speech_t* h) {
                 break;
             }
             case EVENT_ASR_TTS_DATA: {
+                bdsc_logi(TAG, "asr_tts");
                 bdsc_event_data_t*    tts_data = (bdsc_event_data_t*)event->content;
                 bds_session_manager_h sm       = bds_mc_get_session_manager(h->ctx);
                 bds_sm_put_online_audio(sm, tts_data);
@@ -64,6 +70,7 @@ static int32_t event_callback(bds_client_event_t* event, bds_speech_t* h) {
                 break;
             }
             case EVENT_ASR_END: {
+                bdsc_logi(TAG, "asr_end");
                 bdsc_event_process_t* process = (bdsc_event_process_t*)event->content;
                 bds_mc_submit_online_play(h->ctx, process);
                 break;
@@ -97,6 +104,7 @@ static int32_t event_callback(bds_client_event_t* event, bds_speech_t* h) {
                 break;
             }
             case EVENT_WAKEUP_TRIGGER: {
+                bdsc_logi(TAG, "wp_trigger");
                 bdsc_event_wakeup_t* wakeup = (bdsc_event_wakeup_t*)event->content;
                 if (!wakeup) {
                     bdsc_loge(TAG, "wp null!");
@@ -110,6 +118,7 @@ static int32_t event_callback(bds_client_event_t* event, bds_speech_t* h) {
                 break;
             }
             case EVENT_DIRECT: {
+                bdsc_logi(TAG, "direct_trigger");
                 bdsc_event_direct_t* direct = (bdsc_event_direct_t*)event->content;
                 if (!direct) {
                     bdsc_loge(TAG, "direct null!");
